@@ -19,13 +19,11 @@ package com.hazelcast.cache.impl.client;
 import com.hazelcast.cache.impl.CachePortableHook;
 import com.hazelcast.nio.ObjectDataInput;
 import com.hazelcast.nio.ObjectDataOutput;
-import com.hazelcast.nio.serialization.Data;
 import com.hazelcast.nio.serialization.PortableReader;
 import com.hazelcast.nio.serialization.PortableWriter;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class CacheBatchInvalidationMessage extends CacheInvalidationMessage {
