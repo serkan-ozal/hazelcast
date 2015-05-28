@@ -587,9 +587,9 @@ abstract class AbstractClientInternalCacheProxy<K, V>
                         (CacheSingleInvalidationMessage) message;
                 Data key = singleInvalidationMessage.getKey();
                 if (key != null) {
-                    //nearCache.invalidate(key);
+                    nearCache.invalidate(key);
                 } else {
-                    //nearCache.clear();
+                    nearCache.clear();
                 }
             } else if (message instanceof CacheBatchInvalidationMessage) {
                 CacheBatchInvalidationMessage batchInvalidationMessage =
@@ -599,7 +599,7 @@ abstract class AbstractClientInternalCacheProxy<K, V>
                 if (invalidationMessages != null) {
                     for (CacheSingleInvalidationMessage invalidationMessage : invalidationMessages) {
                         if (!client.getUuid().equals(invalidationMessage.getSourceUuid())) {
-                            //nearCache.invalidate(invalidationMessage.getKey());
+                            nearCache.invalidate(invalidationMessage.getKey());
                         }
                     }
                 }
