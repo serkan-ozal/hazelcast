@@ -88,7 +88,7 @@ public abstract class AbstractCacheRecordStore<R extends CacheRecord, CRM extend
     protected CacheStatisticsImpl statistics;
     protected CacheLoader cacheLoader;
     protected CacheWriter cacheWriter;
-    protected boolean isEventsEnabled = false;
+    protected boolean isEventsEnabled = true;
     protected boolean isEventBatchingEnabled;
     protected ExpiryPolicy defaultExpiryPolicy;
     protected final EvictionConfig evictionConfig;
