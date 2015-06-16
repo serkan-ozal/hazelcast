@@ -19,6 +19,9 @@ package com.hazelcast.cache.impl.client;
 import com.hazelcast.cache.impl.CacheEventListener;
 import com.hazelcast.client.ClientEndpoint;
 
+import java.util.Iterator;
+import java.util.List;
+
 public final class CacheInvalidationListener implements CacheEventListener {
 
     private final ClientEndpoint endpoint;
@@ -34,8 +37,42 @@ public final class CacheInvalidationListener implements CacheEventListener {
         if (eventObject instanceof CacheInvalidationMessage) {
             CacheInvalidationMessage message = (CacheInvalidationMessage) eventObject;
             if (endpoint.isAlive()) {
-                endpoint.sendEvent(message.getName(), message, callId);
+                if (message instanceof CacheSingleInvalidationMessage) {
+                    handleSingleInvalidationMessage((CacheSingleInvalidationMessage) message);
+                } else if (message instanceof CacheBatchInvalidationMessage) {
+                    handleBatchInvalidationMessage((CacheBatchInvalidationMessage) message);
+                } else {
+                    throw new IllegalArgumentException("Unsupported invalidation message: " + message);
+                }
             }
+        }
+    }
+
+    private void handleSingleInvalidationMessage(CacheSingleInvalidationMessage singleInvalidationMessage) {
+        // No need to send event to its source
+        if (!endpoint.getUuid().equals(singleInvalidationMessage.getSourceUuid())) {
+            String name = singleInvalidationMessage.getName();
+            // We don't need "name" at client
+            singleInvalidationMessage.setName(null);
+            endpoint.sendEvent(name, singleInvalidationMessage, callId);
+        }
+    }
+
+    private void handleBatchInvalidationMessage(CacheBatchInvalidationMessage batchInvalidationMessage) {
+        List<CacheSingleInvalidationMessage> singleInvalidationMessageList =
+                batchInvalidationMessage.getInvalidationMessages();
+        if (singleInvalidationMessageList != null && !singleInvalidationMessageList.isEmpty()) {
+            Iterator<CacheSingleInvalidationMessage> it =
+                    batchInvalidationMessage.getInvalidationMessages().iterator();
+            while (it.hasNext()) {
+                CacheSingleInvalidationMessage singleInvalidationMessage = it.next();
+                // We don't need "name" at client
+                singleInvalidationMessage.setName(null);
+            }
+            String name = batchInvalidationMessage.getName();
+            // We don't need "name" at client
+            batchInvalidationMessage.setName(null);
+            endpoint.sendEvent(name, batchInvalidationMessage, callId);
         }
     }
 

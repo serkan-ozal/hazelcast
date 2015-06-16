@@ -189,7 +189,9 @@ public class CacheService extends AbstractCacheService {
                 invalidationMessageQueue = newInvalidationMessageQueue;
             }
         }
-        CacheSingleInvalidationMessage invalidationMessage = new CacheSingleInvalidationMessage(name, key, sourceUuid);
+        // We don't need "name" in "CacheSingleInvalidationMessage" since
+        // they are all wrapped by "CacheSingleInvalidationMessage" with same name.
+        CacheSingleInvalidationMessage invalidationMessage = new CacheSingleInvalidationMessage(key, sourceUuid);
         invalidationMessageQueue.offer(invalidationMessage);
         if (invalidationMessageQueue.size() >= invalidationMessageBatchSize) {
             flushInvalidationMessages(name, invalidationMessageQueue);

@@ -40,6 +40,10 @@ public abstract class CacheInvalidationMessage implements Portable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Data getKey() {
         return null;
     }

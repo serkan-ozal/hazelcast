@@ -34,6 +34,11 @@ public class CacheSingleInvalidationMessage extends CacheInvalidationMessage {
 
     }
 
+    public CacheSingleInvalidationMessage(Data key, String sourceUuid) {
+        this.key = key;
+        this.sourceUuid = sourceUuid;
+    }
+
     public CacheSingleInvalidationMessage(String name, Data key, String sourceUuid) {
         super(name);
         this.key = key;

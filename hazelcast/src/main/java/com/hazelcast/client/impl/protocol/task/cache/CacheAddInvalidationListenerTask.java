@@ -52,28 +52,47 @@ public class CacheAddInvalidationListenerTask
                 }
                 if (eventObject instanceof CacheInvalidationMessage) {
                     if (eventObject instanceof CacheSingleInvalidationMessage) {
-                        CacheSingleInvalidationMessage message = (CacheSingleInvalidationMessage) eventObject;
-                        ClientMessage eventMessage = CacheAddInvalidationListenerCodec.
-                                    encodeCacheInvalidationEvent(message.getName(), message.getKey(), message.getSourceUuid());
-                        sendClientMessage(message.getName(), eventMessage);
+                        handleSingleInvalidationMessage((CacheSingleInvalidationMessage) eventObject);
                     } else if (eventObject instanceof CacheBatchInvalidationMessage) {
-                        CacheBatchInvalidationMessage message = (CacheBatchInvalidationMessage) eventObject;
-                        List<CacheSingleInvalidationMessage> invalidationMessages = message.getInvalidationMessages();
-                        List<Data> keys = new ArrayList<Data>(invalidationMessages.size());
-                        List<String> sourceUuids = new ArrayList<String>(invalidationMessages.size());
-                        for (CacheSingleInvalidationMessage invalidationMessage : invalidationMessages) {
-                            keys.add(invalidationMessage.getKey());
-                            sourceUuids.add(invalidationMessage.getSourceUuid());
-                        }
-                        ClientMessage eventMessage = CacheAddInvalidationListenerCodec.
-                                    encodeCacheBatchInvalidationEvent(message.getName(), keys, sourceUuids);
-                        sendClientMessage(message.getName(), eventMessage);
+                        handleBatchInvalidationMessage((CacheBatchInvalidationMessage) eventObject);
+                    } else {
+                        throw new IllegalArgumentException("Unsupported invalidation message: " + eventObject);
                     }
                 }
             }
         });
         endpoint.setListenerRegistration(CacheService.SERVICE_NAME, parameters.name, registrationId);
         return registrationId;
+    }
+
+    private void handleSingleInvalidationMessage(CacheSingleInvalidationMessage singleInvalidationMessage) {
+        // No need to send event to its source
+        if (!endpoint.getUuid().equals(singleInvalidationMessage.getSourceUuid())) {
+            String name = singleInvalidationMessage.getName();
+            // We don't need "name" at client and
+            // we filtered as source uuid so need to send it to client
+            ClientMessage eventMessage = CacheAddInvalidationListenerCodec.
+                    encodeCacheInvalidationEvent(null, singleInvalidationMessage.getKey(), null);
+            sendClientMessage(name, eventMessage);
+        }
+    }
+
+    private void handleBatchInvalidationMessage(CacheBatchInvalidationMessage batchInvalidationMessage) {
+        String name = batchInvalidationMessage.getName();
+        List<CacheSingleInvalidationMessage> invalidationMessages =
+                batchInvalidationMessage.getInvalidationMessages();
+        List<Data> keys = new ArrayList<Data>(invalidationMessages.size());
+        for (CacheSingleInvalidationMessage invalidationMessage : invalidationMessages) {
+            // No need to send event to its source
+            if (!endpoint.getUuid().equals(invalidationMessage.getSourceUuid())) {
+                keys.add(invalidationMessage.getKey());
+            }
+        }
+        // We don't need "name" at client and
+        // we filtered as source uuid list so need to send it to client
+        ClientMessage eventMessage = CacheAddInvalidationListenerCodec.
+                encodeCacheBatchInvalidationEvent(null, keys, null);
+        sendClientMessage(name, eventMessage);
     }
 
     @Override
