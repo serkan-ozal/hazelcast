@@ -18,6 +18,8 @@ package com.hazelcast.client.impl.protocol.util;
 
 import com.hazelcast.nio.Bits;
 import com.hazelcast.nio.UnsafeHelper;
+import com.hazelcast.nio.serialization.Data;
+import com.hazelcast.nio.serialization.SelfWritableData;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import sun.misc.Unsafe;
 
@@ -210,6 +212,23 @@ public class UnsafeBuffer implements ClientProtocolBuffer {
         putBytes(index + Bits.INT_SIZE_IN_BYTES, bytes);
 
         return Bits.INT_SIZE_IN_BYTES + bytes.length;
+    }
+
+    @Override
+    public void putData(int index, Data data) {
+        if (data instanceof SelfWritableData) {
+            putSelfWritableData(index, (SelfWritableData) data);
+        } else {
+            final byte[] bytes = data.toByteArray();
+            putBytes(index, bytes);
+        }
+    }
+
+    @Override
+    public void putSelfWritableData(int index, SelfWritableData selfWritableData) {
+        boundsCheck(index, selfWritableData.totalSize());
+
+        selfWritableData.writeTo(byteArray, addressOffset + index);
     }
 
     ///////////////////////////////////////////////////////////////////////////
