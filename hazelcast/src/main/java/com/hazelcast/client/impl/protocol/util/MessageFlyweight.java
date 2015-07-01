@@ -237,4 +237,9 @@ public class MessageFlyweight {
         buffer.putInt(index + offset, (int) value);
     }
 
+    public void clearBuffer() {
+        // Clear means that no need to reference to buffer anymore so GC can collect it
+        this.buffer = null;
+    }
+
 }
