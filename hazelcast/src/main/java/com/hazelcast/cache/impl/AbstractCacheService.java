@@ -100,7 +100,6 @@ public abstract class AbstractCacheService
     public void destroyDistributedObject(String objectName) {
     }
 
-    /*
     @Override
     public void beforeMigration(PartitionMigrationEvent event) {
     }
@@ -123,7 +122,6 @@ public abstract class AbstractCacheService
     public void clearPartitionReplica(int partitionId) {
         segments[partitionId].clear();
     }
-    */
 
     @Override
     public ICacheRecordStore getOrCreateCache(String name, int partitionId) {

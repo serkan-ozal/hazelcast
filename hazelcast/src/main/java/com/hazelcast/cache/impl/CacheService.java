@@ -72,6 +72,8 @@ public class CacheService extends AbstractCacheService {
             new ConcurrentHashMap<String, Queue<CacheSingleInvalidationMessage>>();
     protected ScheduledFuture cacheBatchInvalidationMessageSenderScheduler;
     protected final AtomicBoolean cacheBatchInvalidationMessageSenderInProgress = new AtomicBoolean(false);
+    protected final boolean disableCacheReplication =
+            Boolean.getBoolean("hazelcast.cache.disableCacheReplication");
 
     protected ICacheRecordStore createNewRecordStore(String name, int partitionId) {
         return new CacheRecordStore(name, partitionId, nodeEngine, CacheService.this);
@@ -120,14 +122,17 @@ public class CacheService extends AbstractCacheService {
         }
     }
 
-    /*
     @Override
     public Operation prepareReplicationOperation(PartitionReplicationEvent event) {
+        if (disableCacheReplication) {
+            // TODO Can/should we decide if this is called from `ReplicaSyncRequest` or `MigrationRequestOperation`
+            // by looking `replicaIndex` as it is `0` or not
+            return null;
+        }
         CachePartitionSegment segment = segments[event.getPartitionId()];
         CacheReplicationOperation op = new CacheReplicationOperation(segment, event.getReplicaIndex());
         return op.isEmpty() ? null : op;
     }
-    */
 
     /**
      * Registers and {@link CacheInvalidationListener} for specified <code>cacheName</code>.
