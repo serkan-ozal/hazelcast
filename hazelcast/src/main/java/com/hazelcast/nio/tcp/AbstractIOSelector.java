@@ -97,8 +97,9 @@ public abstract class AbstractIOSelector extends Thread implements IOSelector {
     }
 
     private void processSelectionQueue() {
-        //noinspection WhileLoopSpinsOnField
-        while (running) {
+        int size = selectorQueue.size();
+        // Don't process and wait tasks added while the current ones are processing
+        for (int i = 0; i < size && running; i++) {
             final Runnable task = selectorQueue.poll();
             if (task == null) {
                 return;
