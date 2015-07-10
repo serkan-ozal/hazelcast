@@ -30,7 +30,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class AbstractIOSelector extends Thread implements IOSelector {
 
-    private static final int SELECT_WAIT_TIME_MILLIS = 5000;
+    private static final int SELECT_WAIT_TIME_MILLIS =
+            Integer.getInteger("hazelcast.nio.tcp.selectWaitTimeMillis", 1000);
     private static final int SELECT_FAILURE_PAUSE_MILLIS = 1000;
 
     @Probe(name = "selectorQueueSize")
@@ -140,12 +141,7 @@ public abstract class AbstractIOSelector extends Thread implements IOSelector {
                 }
 
                 try {
-                    int selectedKeyCount;
-                    if (selectorQueue.isEmpty()) {
-                        selectedKeyCount = selector.select(waitTime);
-                    } else{
-                        selectedKeyCount = selector.selectNow();
-                    }
+                    int selectedKeyCount = selector.select(waitTime);
                     lastSelectTimeMs = System.currentTimeMillis();
 
                     if (selectedKeyCount == 0) {
