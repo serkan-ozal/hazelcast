@@ -140,7 +140,12 @@ public abstract class AbstractIOSelector extends Thread implements IOSelector {
                 }
 
                 try {
-                    int selectedKeyCount = selector.select(waitTime);
+                    int selectedKeyCount;
+                    if (selectorQueue.isEmpty()) {
+                        selectedKeyCount = selector.select(waitTime);
+                    } else{
+                        selectedKeyCount = selector.selectNow();
+                    }
                     lastSelectTimeMs = System.currentTimeMillis();
 
                     if (selectedKeyCount == 0) {
