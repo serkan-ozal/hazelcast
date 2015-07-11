@@ -58,11 +58,16 @@ public class TcpIpConnectionManager implements ConnectionManager {
 
     private static final int DEFAULT_KILL_THREAD_MILLIS = 1000 * 10;
 
-    final int socketReceiveBufferSize;
-
     final IOService ioService;
 
+    final int socketReceiveBufferSize;
     final int socketSendBufferSize;
+
+    final int socketClientReceiveBufferSize;
+    final int socketClientSendBufferSize;
+
+    final int socketServerReceiveBufferSize;
+    final int socketServerSendBufferSize;
 
     private final ConstructorFunction<Address, TcpIpConnectionMonitor> monitorConstructor
             = new ConstructorFunction<Address, TcpIpConnectionMonitor>() {
@@ -150,6 +155,10 @@ public class TcpIpConnectionManager implements ConnectionManager {
         this.logger = loggingService.getLogger(TcpIpConnectionManager.class.getName());
         this.socketReceiveBufferSize = ioService.getSocketReceiveBufferSize() * IOService.KILO_BYTE;
         this.socketSendBufferSize = ioService.getSocketSendBufferSize() * IOService.KILO_BYTE;
+        this.socketClientReceiveBufferSize = ioService.getSocketClientReceiveBufferSize() * IOService.KILO_BYTE;
+        this.socketClientSendBufferSize = ioService.getSocketClientSendBufferSize() * IOService.KILO_BYTE;
+        this.socketServerReceiveBufferSize = ioService.getSocketServerReceiveBufferSize() * IOService.KILO_BYTE;
+        this.socketServerSendBufferSize = ioService.getSocketServerSendBufferSize() * IOService.KILO_BYTE;
         this.socketLingerSeconds = ioService.getSocketLingerSeconds();
         this.socketConnectTimeoutSeconds = ioService.getSocketConnectTimeoutSeconds();
         this.socketKeepAlive = ioService.getSocketKeepAlive();

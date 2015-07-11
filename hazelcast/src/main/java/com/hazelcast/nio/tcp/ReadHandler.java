@@ -39,7 +39,7 @@ import static com.hazelcast.util.counters.SwCounter.newSwCounter;
  */
 public final class ReadHandler extends AbstractSelectionHandler {
 
-    private final ByteBuffer inputBuffer;
+    private ByteBuffer inputBuffer;
 
     @Probe(name = "in.bytesRead")
     private final SwCounter bytesRead = newSwCounter();
@@ -62,7 +62,6 @@ public final class ReadHandler extends AbstractSelectionHandler {
     public ReadHandler(TcpIpConnection connection, IOSelector ioSelector) {
         super(connection, ioSelector, SelectionKey.OP_READ);
         this.ioSelector = ioSelector;
-        this.inputBuffer = ByteBuffer.allocate(connectionManager.socketReceiveBufferSize);
 
         this.metricRegistry = connection.getConnectionManager().getMetricRegistry();
         metricRegistry.scanAndRegister(this, "tcp.connection[" + connection.getMetricsId() + "]");
@@ -191,16 +190,32 @@ public final class ReadHandler extends AbstractSelectionHandler {
                 String protocol = bytesToString(protocolBuffer.array());
                 WriteHandler writeHandler = connection.getWriteHandler();
                 if (Protocols.CLUSTER.equals(protocol)) {
+                    if (connectionManager.socketServerReceiveBufferSize > 0) {
+                        inputBuffer = ByteBuffer.allocate(connectionManager.socketServerReceiveBufferSize);
+                    } else {
+                        inputBuffer = ByteBuffer.allocate(connectionManager.socketReceiveBufferSize);
+                    }
                     connection.setType(ConnectionType.MEMBER);
                     writeHandler.setProtocol(Protocols.CLUSTER);
                     socketReader = new SocketPacketReader(connection);
                 } else if (Protocols.CLIENT_BINARY.equals(protocol)) {
+                    if (connectionManager.socketClientReceiveBufferSize > 0) {
+                        inputBuffer = ByteBuffer.allocate(connectionManager.socketClientReceiveBufferSize);
+                    } else {
+                        inputBuffer = ByteBuffer.allocate(connectionManager.socketReceiveBufferSize);
+                    }
                     writeHandler.setProtocol(Protocols.CLIENT_BINARY);
                     socketReader = new SocketClientDataReader(connection);
                 } else if (Protocols.CLIENT_BINARY_NEW.equals(protocol)) {
+                    if (connectionManager.socketClientReceiveBufferSize > 0) {
+                        inputBuffer = ByteBuffer.allocate(connectionManager.socketClientReceiveBufferSize);
+                    } else {
+                        inputBuffer = ByteBuffer.allocate(connectionManager.socketReceiveBufferSize);
+                    }
                     writeHandler.setProtocol(Protocols.CLIENT_BINARY_NEW);
                     socketReader = new SocketClientMessageReader(connection, socketChannel);
                 } else {
+                    inputBuffer = ByteBuffer.allocate(connectionManager.socketReceiveBufferSize);
                     writeHandler.setProtocol(Protocols.TEXT);
                     inputBuffer.put(protocolBuffer.array());
                     socketReader = new SocketTextReader(connection);

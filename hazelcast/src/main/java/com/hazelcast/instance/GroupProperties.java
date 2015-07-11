@@ -149,6 +149,10 @@ public class GroupProperties {
     public static final String PROP_CLIENT_ENGINE_THREAD_COUNT = "hazelcast.clientengine.thread.count";
     public static final String PROP_SOCKET_RECEIVE_BUFFER_SIZE = "hazelcast.socket.receive.buffer.size";
     public static final String PROP_SOCKET_SEND_BUFFER_SIZE = "hazelcast.socket.send.buffer.size";
+    public static final String PROP_SOCKET_CLIENT_RECEIVE_BUFFER_SIZE = "hazelcast.socket.client.receive.buffer.size";
+    public static final String PROP_SOCKET_CLIENT_SEND_BUFFER_SIZE = "hazelcast.socket.client.send.buffer.size";
+    public static final String PROP_SOCKET_SERVER_RECEIVE_BUFFER_SIZE = "hazelcast.socket.server.receive.buffer.size";
+    public static final String PROP_SOCKET_SERVER_SEND_BUFFER_SIZE = "hazelcast.socket.server.send.buffer.size";
     public static final String PROP_SOCKET_LINGER_SECONDS = "hazelcast.socket.linger.seconds";
     public static final String PROP_SOCKET_CONNECT_TIMEOUT_SECONDS = "hazelcast.socket.connect.timeout.seconds";
     public static final String PROP_SOCKET_KEEP_ALIVE = "hazelcast.socket.keep.alive";
@@ -516,6 +520,18 @@ public class GroupProperties {
     // number of kilobytes
     public final GroupProperty SOCKET_SEND_BUFFER_SIZE;
 
+    // number of kilobytes
+    public final GroupProperty SOCKET_CLIENT_RECEIVE_BUFFER_SIZE;
+
+    // number of kilobytes
+    public final GroupProperty SOCKET_CLIENT_SEND_BUFFER_SIZE;
+
+    // number of kilobytes
+    public final GroupProperty SOCKET_SERVER_RECEIVE_BUFFER_SIZE;
+
+    // number of kilobytes
+    public final GroupProperty SOCKET_SERVER_SEND_BUFFER_SIZE;
+
     public final GroupProperty SOCKET_LINGER_SECONDS;
 
     public final GroupProperty SOCKET_CONNECT_TIMEOUT_SECONDS;
@@ -701,6 +717,10 @@ public class GroupProperties {
         SOCKET_CLIENT_BIND = new GroupProperty(config, PROP_SOCKET_CLIENT_BIND, "true");
         SOCKET_RECEIVE_BUFFER_SIZE = new GroupProperty(config, PROP_SOCKET_RECEIVE_BUFFER_SIZE, "32");
         SOCKET_SEND_BUFFER_SIZE = new GroupProperty(config, PROP_SOCKET_SEND_BUFFER_SIZE, "32");
+        SOCKET_CLIENT_RECEIVE_BUFFER_SIZE = new GroupProperty(config, PROP_SOCKET_CLIENT_RECEIVE_BUFFER_SIZE, "-1");
+        SOCKET_CLIENT_SEND_BUFFER_SIZE = new GroupProperty(config, PROP_SOCKET_CLIENT_SEND_BUFFER_SIZE, "-1");
+        SOCKET_SERVER_RECEIVE_BUFFER_SIZE = new GroupProperty(config, PROP_SOCKET_SERVER_RECEIVE_BUFFER_SIZE, "-1");
+        SOCKET_SERVER_SEND_BUFFER_SIZE = new GroupProperty(config, PROP_SOCKET_SERVER_SEND_BUFFER_SIZE, "-1");
         SOCKET_LINGER_SECONDS = new GroupProperty(config, PROP_SOCKET_LINGER_SECONDS, "0");
         SOCKET_CONNECT_TIMEOUT_SECONDS = new GroupProperty(config, PROP_SOCKET_CONNECT_TIMEOUT_SECONDS, "0");
         SOCKET_KEEP_ALIVE = new GroupProperty(config, PROP_SOCKET_KEEP_ALIVE, "true");

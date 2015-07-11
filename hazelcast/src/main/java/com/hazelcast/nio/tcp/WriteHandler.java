@@ -52,7 +52,7 @@ public final class WriteHandler extends AbstractSelectionHandler implements Runn
     @Probe(name = "out.priorityWriteQueueSize")
     private final Queue<SocketWritable> urgentWriteQueue = new ConcurrentLinkedQueue<SocketWritable>();
     private final AtomicBoolean scheduled = new AtomicBoolean(false);
-    private final ByteBuffer outputBuffer;
+    private ByteBuffer outputBuffer;
     @Probe(name = "out.bytesWritten")
     private final SwCounter bytesWritten = newSwCounter();
     @Probe(name = "out.normalPacketsWritten")
@@ -77,7 +77,6 @@ public final class WriteHandler extends AbstractSelectionHandler implements Runn
 
     WriteHandler(TcpIpConnection connection, IOSelector ioSelector) {
         super(connection, ioSelector, SelectionKey.OP_WRITE);
-        this.outputBuffer = ByteBuffer.allocate(connectionManager.socketSendBufferSize);
 
         // sensors
         this.metricsRegistry = connection.getConnectionManager().getMetricRegistry();
@@ -159,14 +158,30 @@ public final class WriteHandler extends AbstractSelectionHandler implements Runn
     private void createWriter(String protocol) {
         if (socketWriter == null) {
             if (Protocols.CLUSTER.equals(protocol)) {
+                if (connectionManager.socketServerSendBufferSize > 0) {
+                    outputBuffer = ByteBuffer.allocate(connectionManager.socketServerSendBufferSize);
+                } else {
+                    outputBuffer = ByteBuffer.allocate(connectionManager.socketSendBufferSize);
+                }
                 socketWriter = new SocketPacketWriter(connection);
                 outputBuffer.put(stringToBytes(Protocols.CLUSTER));
                 registerOp(SelectionKey.OP_WRITE);
             } else if (Protocols.CLIENT_BINARY.equals(protocol)) {
+                if (connectionManager.socketClientSendBufferSize > 0) {
+                    outputBuffer = ByteBuffer.allocate(connectionManager.socketClientSendBufferSize);
+                } else {
+                    outputBuffer = ByteBuffer.allocate(connectionManager.socketSendBufferSize);
+                }
                 socketWriter = new SocketClientDataWriter();
             } else if (Protocols.CLIENT_BINARY_NEW.equals(protocol)) {
+                if (connectionManager.socketClientSendBufferSize > 0) {
+                    outputBuffer = ByteBuffer.allocate(connectionManager.socketClientSendBufferSize);
+                } else {
+                    outputBuffer = ByteBuffer.allocate(connectionManager.socketSendBufferSize);
+                }
                 socketWriter = new SocketClientMessageWriter();
             } else {
+                outputBuffer = ByteBuffer.allocate(connectionManager.socketSendBufferSize);
                 socketWriter = new SocketTextWriter(connection);
             }
         }
