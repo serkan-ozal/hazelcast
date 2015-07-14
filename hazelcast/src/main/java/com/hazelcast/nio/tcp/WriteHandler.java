@@ -28,6 +28,7 @@ import com.hazelcast.util.counters.SwCounter;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.io.IOException;
+import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.util.Queue;
@@ -155,33 +156,49 @@ public final class WriteHandler extends AbstractSelectionHandler implements Runn
         }
     }
 
+    private void initBuffers(boolean isClient) {
+        try {
+            if (isClient) {
+                if (connectionManager.socketClientSendBufferSize > 0) {
+                    outputBuffer = ByteBuffer.allocate(connectionManager.socketClientSendBufferSize);
+                    connection.getSocketChannelWrapper().socket()
+                            .setSendBufferSize(connectionManager.socketClientSendBufferSize);
+                } else {
+                    outputBuffer = ByteBuffer.allocate(connectionManager.socketSendBufferSize);
+                    connection.getSocketChannelWrapper().socket()
+                            .setSendBufferSize(connectionManager.socketSendBufferSize);
+                }
+            } else {
+                if (connectionManager.socketServerSendBufferSize > 0) {
+                    outputBuffer = ByteBuffer.allocate(connectionManager.socketServerSendBufferSize);
+                    connection.getSocketChannelWrapper().socket()
+                            .setSendBufferSize(connectionManager.socketServerSendBufferSize);
+                } else {
+                    outputBuffer = ByteBuffer.allocate(connectionManager.socketSendBufferSize);
+                    connection.getSocketChannelWrapper().socket()
+                            .setSendBufferSize(connectionManager.socketSendBufferSize);
+                }
+            }
+        } catch (SocketException e) {
+            logger.finest("Error occurred while setting socket send buffer size", e);
+        }
+    }
+
     private void createWriter(String protocol) {
         if (socketWriter == null) {
             if (Protocols.CLUSTER.equals(protocol)) {
-                if (connectionManager.socketServerSendBufferSize > 0) {
-                    outputBuffer = ByteBuffer.allocate(connectionManager.socketServerSendBufferSize);
-                } else {
-                    outputBuffer = ByteBuffer.allocate(connectionManager.socketSendBufferSize);
-                }
+                initBuffers(false);
                 socketWriter = new SocketPacketWriter(connection);
                 outputBuffer.put(stringToBytes(Protocols.CLUSTER));
                 registerOp(SelectionKey.OP_WRITE);
             } else if (Protocols.CLIENT_BINARY.equals(protocol)) {
-                if (connectionManager.socketClientSendBufferSize > 0) {
-                    outputBuffer = ByteBuffer.allocate(connectionManager.socketClientSendBufferSize);
-                } else {
-                    outputBuffer = ByteBuffer.allocate(connectionManager.socketSendBufferSize);
-                }
+                initBuffers(true);
                 socketWriter = new SocketClientDataWriter();
             } else if (Protocols.CLIENT_BINARY_NEW.equals(protocol)) {
-                if (connectionManager.socketClientSendBufferSize > 0) {
-                    outputBuffer = ByteBuffer.allocate(connectionManager.socketClientSendBufferSize);
-                } else {
-                    outputBuffer = ByteBuffer.allocate(connectionManager.socketSendBufferSize);
-                }
+                initBuffers(true);
                 socketWriter = new SocketClientMessageWriter();
             } else {
-                outputBuffer = ByteBuffer.allocate(connectionManager.socketSendBufferSize);
+                initBuffers(false);
                 socketWriter = new SocketTextWriter(connection);
             }
         }

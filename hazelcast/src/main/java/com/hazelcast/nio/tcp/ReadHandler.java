@@ -28,6 +28,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 
@@ -174,6 +175,34 @@ public final class ReadHandler extends AbstractSelectionHandler {
         super.handleSocketException(e);
     }
 
+    private void initBuffers(boolean isClient) {
+        try {
+            if (isClient) {
+                if (connectionManager.socketClientReceiveBufferSize > 0) {
+                    inputBuffer = ByteBuffer.allocate(connectionManager.socketClientReceiveBufferSize);
+                    connection.getSocketChannelWrapper().socket()
+                            .setReceiveBufferSize(connectionManager.socketClientReceiveBufferSize);
+                } else {
+                    inputBuffer = ByteBuffer.allocate(connectionManager.socketReceiveBufferSize);
+                    connection.getSocketChannelWrapper().socket()
+                            .setReceiveBufferSize(connectionManager.socketReceiveBufferSize);
+                }
+            } else {
+                if (connectionManager.socketServerReceiveBufferSize > 0) {
+                    inputBuffer = ByteBuffer.allocate(connectionManager.socketServerReceiveBufferSize);
+                    connection.getSocketChannelWrapper().socket()
+                            .setReceiveBufferSize(connectionManager.socketServerReceiveBufferSize);
+                } else {
+                    inputBuffer = ByteBuffer.allocate(connectionManager.socketReceiveBufferSize);
+                    connection.getSocketChannelWrapper().socket()
+                            .setReceiveBufferSize(connectionManager.socketReceiveBufferSize);
+                }
+            }
+        } catch (SocketException e) {
+            logger.finest("Error occurred while setting socket send buffer size", e);
+        }
+    }
+
     private void initializeSocketReader()
             throws IOException {
         if (socketReader == null) {
@@ -190,32 +219,20 @@ public final class ReadHandler extends AbstractSelectionHandler {
                 String protocol = bytesToString(protocolBuffer.array());
                 WriteHandler writeHandler = connection.getWriteHandler();
                 if (Protocols.CLUSTER.equals(protocol)) {
-                    if (connectionManager.socketServerReceiveBufferSize > 0) {
-                        inputBuffer = ByteBuffer.allocate(connectionManager.socketServerReceiveBufferSize);
-                    } else {
-                        inputBuffer = ByteBuffer.allocate(connectionManager.socketReceiveBufferSize);
-                    }
+                    initBuffers(false);
                     connection.setType(ConnectionType.MEMBER);
                     writeHandler.setProtocol(Protocols.CLUSTER);
                     socketReader = new SocketPacketReader(connection);
                 } else if (Protocols.CLIENT_BINARY.equals(protocol)) {
-                    if (connectionManager.socketClientReceiveBufferSize > 0) {
-                        inputBuffer = ByteBuffer.allocate(connectionManager.socketClientReceiveBufferSize);
-                    } else {
-                        inputBuffer = ByteBuffer.allocate(connectionManager.socketReceiveBufferSize);
-                    }
+                    initBuffers(true);
                     writeHandler.setProtocol(Protocols.CLIENT_BINARY);
                     socketReader = new SocketClientDataReader(connection);
                 } else if (Protocols.CLIENT_BINARY_NEW.equals(protocol)) {
-                    if (connectionManager.socketClientReceiveBufferSize > 0) {
-                        inputBuffer = ByteBuffer.allocate(connectionManager.socketClientReceiveBufferSize);
-                    } else {
-                        inputBuffer = ByteBuffer.allocate(connectionManager.socketReceiveBufferSize);
-                    }
+                    initBuffers(true);
                     writeHandler.setProtocol(Protocols.CLIENT_BINARY_NEW);
                     socketReader = new SocketClientMessageReader(connection, socketChannel);
                 } else {
-                    inputBuffer = ByteBuffer.allocate(connectionManager.socketReceiveBufferSize);
+                    initBuffers(false);
                     writeHandler.setProtocol(Protocols.TEXT);
                     inputBuffer.put(protocolBuffer.array());
                     socketReader = new SocketTextReader(connection);
