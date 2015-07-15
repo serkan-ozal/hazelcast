@@ -137,8 +137,8 @@ abstract class AbstractClientInternalCacheProxy<K, V>
             cacheOnUpdate = nearCacheConfig.getLocalUpdatePolicy() == NearCacheConfig.LocalUpdatePolicy.CACHE;
             NearCacheContext nearCacheContext =
                     new NearCacheContext(nearCacheManager,
-                                         clientContext.getSerializationService(),
-                                         createNearCacheExecutor(clientContext.getExecutionService()));
+                            clientContext.getSerializationService(),
+                            createNearCacheExecutor(clientContext.getExecutionService()));
             nearCache = nearCacheManager.getOrCreateNearCache(nameWithPrefix, nearCacheConfig, nearCacheContext);
             registerInvalidationListener();
         }
@@ -595,15 +595,13 @@ abstract class AbstractClientInternalCacheProxy<K, V>
             } else if (message instanceof CacheBatchInvalidationMessage) {
                 CacheBatchInvalidationMessage batchInvalidationMessage =
                         (CacheBatchInvalidationMessage) message;
-                List<String> sourceUuids = batchInvalidationMessage.getSourceUuids();
-                List<Data> keys = batchInvalidationMessage.getKeys();
-                Iterator<Data> keysIt = keys.iterator();
-                Iterator<String> sourceUuidsIt = sourceUuids.iterator();
-                while (keysIt.hasNext() && sourceUuidsIt.hasNext()) {
-                    Data key = keysIt.next();
-                    String sourceUuid = sourceUuidsIt.next();
-                    if (!client.getUuid().equals(sourceUuid)) {
-                        nearCache.invalidate(key);
+                List<CacheSingleInvalidationMessage> invalidationMessages =
+                        batchInvalidationMessage.getInvalidationMessages();
+                if (invalidationMessages != null) {
+                    for (CacheSingleInvalidationMessage invalidationMessage : invalidationMessages) {
+                        if (!client.getUuid().equals(invalidationMessage.getSourceUuid())) {
+                            nearCache.invalidate(invalidationMessage.getKey());
+                        }
                     }
                 }
             } else {
