@@ -218,7 +218,11 @@ public class CacheService extends AbstractCacheService {
                 CacheBatchInvalidationMessage batchInvalidationMessage =
                         new CacheBatchInvalidationMessage(cacheName, invalidationMessageQueue.size());
                 CacheSingleInvalidationMessage invalidationMessage;
-                while ((invalidationMessage = invalidationMessageQueue.poll()) != null) {
+                final int size = invalidationMessageQueue.size();
+                for (int i = 0; i < size; i++) {
+                    if ((invalidationMessage = invalidationMessageQueue.poll()) == null) {
+                        break;
+                    }
                     batchInvalidationMessage.addInvalidationMessage(invalidationMessage);
                 }
                 EventService eventService = nodeEngine.getEventService();
