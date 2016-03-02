@@ -563,6 +563,17 @@ public class AlignmentAwareMemoryAccessStrategy extends StandardMemoryAccessStra
 
     /////////////////////////////////////////////////////////////////////////
 
+
+    @Override
+    public boolean compareAndSwapInt(long address, int expected, int x) {
+        if (is4BytesAligned(address)) {
+            return super.compareAndSwapInt(address, expected, x);
+        } else {
+            throw new IllegalArgumentException("Unaligned memory accesses are not supported for CAS operations. "
+                    + "Address must be 4-bytes aligned for integer typed CAS, but it is " + address);
+        }
+    }
+
     @Override
     public boolean compareAndSwapInt(Object o, long offset, int expected, int x) {
         if (is4BytesAligned(offset)) {
@@ -570,6 +581,16 @@ public class AlignmentAwareMemoryAccessStrategy extends StandardMemoryAccessStra
         } else {
             throw new IllegalArgumentException("Unaligned memory accesses are not supported for CAS operations. "
                     + "Offset must be 4-bytes aligned for integer typed CAS, but it is " + offset);
+        }
+    }
+
+    @Override
+    public boolean compareAndSwapLong(long address, long expected, long x) {
+        if (is4BytesAligned(address)) {
+            return super.compareAndSwapLong(address, expected, x);
+        } else {
+            throw new IllegalArgumentException("Unaligned memory accesses are not supported for CAS operations. "
+                    + "Address must be 8-bytes aligned for long typed CAS, but it is " + address);
         }
     }
 
@@ -596,6 +617,17 @@ public class AlignmentAwareMemoryAccessStrategy extends StandardMemoryAccessStra
 
     /////////////////////////////////////////////////////////////////////////
 
+
+    @Override
+    public void putOrderedInt(long address, int x) {
+        if (is4BytesAligned(address)) {
+            super.putOrderedInt(address, x);
+        } else {
+            throw new IllegalArgumentException("Unaligned memory accesses are not supported for ordered writes. "
+                    + "Address must be 4-bytes aligned for integer typed ordered write, but it is " + address);
+        }
+    }
+
     @Override
     public void putOrderedInt(Object o, long offset, int x) {
         if (is4BytesAligned(offset)) {
@@ -603,6 +635,16 @@ public class AlignmentAwareMemoryAccessStrategy extends StandardMemoryAccessStra
         } else {
             throw new IllegalArgumentException("Unaligned memory accesses are not supported for ordered writes. "
                     + "Offset must be 4-bytes aligned for integer typed ordered write, but it is " + offset);
+        }
+    }
+
+    @Override
+    public void putOrderedLong(long address, long x) {
+        if (is8BytesAligned(address)) {
+            super.putOrderedLong(address, x);
+        } else {
+            throw new IllegalArgumentException("Unaligned memory accesses are not supported for ordered writes. "
+                    + "Address must be 8-bytes aligned for long typed ordered write, but it is " + address);
         }
     }
 

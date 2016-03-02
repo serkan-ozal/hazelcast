@@ -247,6 +247,12 @@ public interface MemoryAccessStrategy {
      */
     boolean getBoolean(Object o, long offset);
 
+    /**
+     * Reads the boolean value as volatile from given address.
+     *
+     * @param address the address where boolean value will be read from
+     * @return the read value
+     */
     boolean getBooleanVolatile(long address);
 
     /**
@@ -268,6 +274,12 @@ public interface MemoryAccessStrategy {
      */
     void putBoolean(long address, boolean x);
 
+    /**
+     * Writes the given boolean value as volatile to given address.
+     *
+     * @param address the address where boolean value will be written to
+     * @param x       the boolean value to be written
+     */
     void putBooleanVolatile(long address, boolean x);
 
     /**
@@ -298,6 +310,12 @@ public interface MemoryAccessStrategy {
      */
     byte getByte(long address);
 
+    /**
+     * Reads the byte value as volatile from given address.
+     *
+     * @param address the address where byte value will be read from
+     * @return the read value
+     */
     byte getByteVolatile(long address);
 
     /**
@@ -328,6 +346,12 @@ public interface MemoryAccessStrategy {
      */
     void putByte(long address, byte x);
 
+    /**
+     * Writes the given byte value as volatile to given address.
+     *
+     * @param address the address where byte value will be written to
+     * @param x       the byte value to be written
+     */
     void putByteVolatile(long address, byte x);
 
     /**
@@ -358,6 +382,12 @@ public interface MemoryAccessStrategy {
      */
     char getChar(long address);
 
+    /**
+     * Reads the char value as volatile from given address.
+     *
+     * @param address the address where char value will be read from
+     * @return the read value
+     */
     char getCharVolatile(long address);
 
     char getChar(long address, boolean bigEndian);
@@ -392,6 +422,12 @@ public interface MemoryAccessStrategy {
      */
     void putChar(long address, char x);
 
+    /**
+     * Writes the given char value as volatile to given address.
+     *
+     * @param address the address where char value will be written to
+     * @param x       the char value to be written
+     */
     void putCharVolatile(long address, char x);
 
     void putChar(long address, char x, boolean bigEndian);
@@ -426,6 +462,12 @@ public interface MemoryAccessStrategy {
      */
     short getShort(long address);
 
+    /**
+     * Reads the short value as volatile from given address.
+     *
+     * @param address the address where short value will be read from
+     * @return the read value
+     */
     short getShortVolatile(long address);
 
     short getShort(long address, boolean bigEndian);
@@ -460,6 +502,12 @@ public interface MemoryAccessStrategy {
      */
     void putShort(long address, short x);
 
+    /**
+     * Writes the given short value as volatile to given address.
+     *
+     * @param address the address where short value will be written to
+     * @param x       the short value to be written
+     */
     void putShortVolatile(long address, short x);
 
     void putShort(long address, short x, boolean bigEndian);
@@ -494,6 +542,12 @@ public interface MemoryAccessStrategy {
      */
     int getInt(long address);
 
+    /**
+     * Reads the int value as volatile from given address.
+     *
+     * @param address the address where int value will be read from
+     * @return the read value
+     */
     int getIntVolatile(long address);
 
     int getInt(long address, boolean bigEndian);
@@ -528,6 +582,12 @@ public interface MemoryAccessStrategy {
      */
     void putInt(long address, int x);
 
+    /**
+     * Writes the given int value as volatile to given address.
+     *
+     * @param address the address where int value will be written to
+     * @param x       the int value to be written
+     */
     void putIntVolatile(long address, int x);
 
     void putInt(long address, int x, boolean bigEndian);
@@ -562,6 +622,12 @@ public interface MemoryAccessStrategy {
      */
     float getFloat(long address);
 
+    /**
+     * Reads the float value as volatile from given address.
+     *
+     * @param address the address where float value will be read from
+     * @return the read value
+     */
     float getFloatVolatile(long address);
 
     float getFloat(long address, boolean bigEndian);
@@ -596,6 +662,12 @@ public interface MemoryAccessStrategy {
      */
     void putFloat(long address, float x);
 
+    /**
+     * Writes the given float value as volatile to given address.
+     *
+     * @param address the address where float value will be written to
+     * @param x       the float value to be written
+     */
     void putFloatVolatile(long address, float x);
 
     void putFloat(long address, float x, boolean bigEndian);
@@ -630,6 +702,12 @@ public interface MemoryAccessStrategy {
      */
     long getLong(long address);
 
+    /**
+     * Reads the long value as volatile from given address.
+     *
+     * @param address the address where long value will be read from
+     * @return the read value
+     */
     long getLongVolatile(long address);
 
     long getLong(long address, boolean bigEndian);
@@ -664,6 +742,12 @@ public interface MemoryAccessStrategy {
      */
     void putLong(long address, long x);
 
+    /**
+     * Writes the given long value as volatile to given address.
+     *
+     * @param address the address where long value will be written to
+     * @param x       the long value to be written
+     */
     void putLongVolatile(long address, long x);
 
     void putLong(long address, long x, boolean bigEndian);
@@ -698,6 +782,12 @@ public interface MemoryAccessStrategy {
      */
     double getDouble(long address);
 
+    /**
+     * Reads the double value as volatile from given address.
+     *
+     * @param address the address where double value will be read from
+     * @return the read value
+     */
     double getDoubleVolatile(long address);
 
     double getDouble(long address, boolean bigEndian);
@@ -732,6 +822,12 @@ public interface MemoryAccessStrategy {
      */
     void putDouble(long address, double x);
 
+    /**
+     * Writes the given double value as volatile to given address.
+     *
+     * @param address the address where double value will be written to
+     * @param x       the double value to be written
+     */
     void putDoubleVolatile(long address, double x);
 
     void putDouble(long address, double x, boolean bigEndian);
@@ -799,6 +895,17 @@ public interface MemoryAccessStrategy {
     /////////////////////////////////////////////////////////////////////////
 
     /**
+     * Compares and swaps int value to specified value atomically at given address
+     * if and only if its current value equals to specified expected value.
+     *
+     * @param address   the address where int value will be written to
+     * @param expected  the expected current int value to be set new int value
+     * @param x         the int value to be written
+     * @return <tt>true</tt> if CAS successful, otherwise <tt>false</tt>
+     */
+    boolean compareAndSwapInt(long address, int expected, int x);
+
+    /**
      * Compares and swaps int value to specified value atomically
      * based by given object with given offset
      * if and only if its current value equals to specified expected value.
@@ -807,9 +914,20 @@ public interface MemoryAccessStrategy {
      * @param offset   the offset of int field relative to object itself
      * @param expected the expected current int value to be set new int value
      * @param x        the int value to be written
-     * @return
+     * @return <tt>true</tt> if CAS successful, otherwise <tt>false</tt>
      */
     boolean compareAndSwapInt(Object o, long offset, int expected, int x);
+
+    /**
+     * Compares and swaps long value to specified value atomically at given address
+     * if and only if its current value equals to specified expected value.
+     *
+     * @param address   the address where long value will be written to
+     * @param expected  the expected current long value to be set new int value
+     * @param x         the long value to be written
+     * @return <tt>true</tt> if CAS successful, otherwise <tt>false</tt>
+     */
+    boolean compareAndSwapLong(long address, long expected, long x);
 
     /**
      * Compares and swaps long value to specified value atomically
@@ -820,7 +938,7 @@ public interface MemoryAccessStrategy {
      * @param offset   the offset of long field relative to object itself
      * @param expected the expected current long value to be set new long value
      * @param x        the long value to be written
-     * @return <tt>true</tt> if CAS is successful, <tt>false</tt> otherwise
+     * @return <tt>true</tt> if CAS successful, otherwise <tt>false</tt>
      */
     boolean compareAndSwapLong(Object o, long offset, long expected, long x);
 
@@ -833,11 +951,19 @@ public interface MemoryAccessStrategy {
      * @param offset   the offset of the referenced object field relative to owner object itself
      * @param expected the expected current referenced object to be set new referenced object
      * @param x        the referenced object to be written
-     * @return <tt>true</tt> if CAS is successful, <tt>false</tt> otherwise
+     * @return <tt>true</tt> if CAS successful, otherwise <tt>false</tt>
      */
     boolean compareAndSwapObject(Object o, long offset, Object expected, Object x);
 
     /////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Puts given int value as ordered to CPU write buffer at given address.
+     *
+     * @param address   the address where int value will be written to
+     * @param x         the int value to be written
+     */
+    void putOrderedInt(long address, int x);
 
     /**
      * Puts given int value as ordered to CPU write buffer
@@ -848,6 +974,14 @@ public interface MemoryAccessStrategy {
      * @param x      the int value to be written
      */
     void putOrderedInt(Object o, long offset, int x);
+
+    /**
+     * Puts given long value as ordered to CPU write buffer at given address.
+     *
+     * @param address   the address where long value will be written to
+     * @param x         the long value to be written
+     */
+    void putOrderedLong(long address, long x);
 
     /**
      * Puts given long value as ordered to CPU write buffer

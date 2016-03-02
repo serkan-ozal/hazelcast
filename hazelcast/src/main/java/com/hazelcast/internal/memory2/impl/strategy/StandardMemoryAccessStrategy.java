@@ -661,8 +661,18 @@ public class StandardMemoryAccessStrategy extends UnsafeBasedMemoryAccessStrateg
     /////////////////////////////////////////////////////////////////////////
 
     @Override
+    public boolean compareAndSwapInt(long address, int expected, int x) {
+        return UNSAFE.compareAndSwapInt(null, address, expected, x);
+    }
+
+    @Override
     public boolean compareAndSwapInt(Object o, long offset, int expected, int x) {
         return UNSAFE.compareAndSwapInt(o, offset, expected, x);
+    }
+
+    @Override
+    public boolean compareAndSwapLong(long address, long expected, long x) {
+        return UNSAFE.compareAndSwapLong(null, address, expected, x);
     }
 
     @Override
@@ -678,8 +688,18 @@ public class StandardMemoryAccessStrategy extends UnsafeBasedMemoryAccessStrateg
     /////////////////////////////////////////////////////////////////////////
 
     @Override
+    public void putOrderedInt(long address, int x) {
+        UNSAFE.putOrderedInt(null, address, x);
+    }
+
+    @Override
     public void putOrderedInt(Object o, long offset, int x) {
         UNSAFE.putOrderedInt(o, offset, x);
+    }
+
+    @Override
+    public void putOrderedLong(long address, long x) {
+        UNSAFE.putOrderedLong(null, address, x);
     }
 
     @Override
