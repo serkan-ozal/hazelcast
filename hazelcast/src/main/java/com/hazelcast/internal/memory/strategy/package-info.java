@@ -16,7 +16,7 @@
 
 /**
  * <p>
- *     Internal memory management API implementation
+ *     Internal memory access strategy API
  * </p>
  */
-package com.hazelcast.internal.memory.impl;
+package com.hazelcast.internal.memory.strategy;

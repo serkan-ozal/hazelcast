@@ -30,7 +30,7 @@ import com.hazelcast.cache.impl.nearcache.NearCacheRecordStore;
 import com.hazelcast.cache.impl.nearcache.impl.NearCacheRecordMap;
 import com.hazelcast.config.EvictionConfig;
 import com.hazelcast.config.NearCacheConfig;
-import com.hazelcast.internal.memory.MemoryAccessor;
+import com.hazelcast.internal.memory.strategy.MemoryAccessStrategy;
 import com.hazelcast.monitor.NearCacheStats;
 import com.hazelcast.monitor.impl.NearCacheStatsImpl;
 import com.hazelcast.nio.serialization.Data;
@@ -51,8 +51,8 @@ public abstract class AbstractNearCacheRecordStore<
      * by ignoring compressed-references disable mode on 64 bit JVM.
      */
     protected static final int REFERENCE_SIZE =
-            MemoryAccessor.MEM_AVAILABLE
-                    ? MemoryAccessor.MEM.arrayIndexScale(Object[].class)
+            MemoryAccessStrategy.MEM_AVAILABLE
+                    ? MemoryAccessStrategy.MEM.arrayIndexScale(Object[].class)
                     : (Integer.SIZE / Byte.SIZE);
 
     private static final int MILLI_SECONDS_IN_A_SECOND = 1000;

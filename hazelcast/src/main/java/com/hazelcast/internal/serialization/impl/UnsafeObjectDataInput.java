@@ -16,7 +16,7 @@
 
 package com.hazelcast.internal.serialization.impl;
 
-import com.hazelcast.internal.memory.MemoryAccessor;
+import com.hazelcast.internal.memory.strategy.MemoryAccessStrategy;
 import com.hazelcast.internal.serialization.SerializationService;
 
 import java.io.IOException;
@@ -29,7 +29,7 @@ import static com.hazelcast.nio.Bits.INT_SIZE_IN_BYTES;
 import static com.hazelcast.nio.Bits.LONG_SIZE_IN_BYTES;
 import static com.hazelcast.nio.Bits.NULL_ARRAY_LENGTH;
 import static com.hazelcast.nio.Bits.SHORT_SIZE_IN_BYTES;
-import static com.hazelcast.internal.memory.MemoryAccessor.MEM;
+import static com.hazelcast.internal.memory.strategy.MemoryAccessStrategy.MEM;
 
 class UnsafeObjectDataInput extends ByteArrayObjectDataInput {
 
@@ -43,19 +43,19 @@ class UnsafeObjectDataInput extends ByteArrayObjectDataInput {
 
     @Override
     public int read() throws IOException {
-        return (pos < size) ? MEM.getByte(data, MemoryAccessor.ARRAY_BYTE_BASE_OFFSET + pos++) & 0xFF : -1;
+        return (pos < size) ? MEM.getByte(data, MemoryAccessStrategy.ARRAY_BYTE_BASE_OFFSET + pos++) & 0xFF : -1;
     }
 
     @Override
     public int read(int position) throws IOException {
         return (position < size) ? MEM
-                .getByte(data, MemoryAccessor.ARRAY_BYTE_BASE_OFFSET + position) : NULL_ARRAY_LENGTH;
+                .getByte(data, MemoryAccessStrategy.ARRAY_BYTE_BASE_OFFSET + position) : NULL_ARRAY_LENGTH;
     }
 
     @Override
     public char readChar(int position) throws IOException {
         checkAvailable(position, CHAR_SIZE_IN_BYTES);
-        return MEM.getChar(data, MemoryAccessor.ARRAY_BYTE_BASE_OFFSET + position);
+        return MEM.getChar(data, MemoryAccessStrategy.ARRAY_BYTE_BASE_OFFSET + position);
     }
 
     @Override
@@ -68,7 +68,7 @@ class UnsafeObjectDataInput extends ByteArrayObjectDataInput {
     @Override
     public double readDouble(int position) throws IOException {
         checkAvailable(position, DOUBLE_SIZE_IN_BYTES);
-        return MEM.getDouble(data, MemoryAccessor.ARRAY_BYTE_BASE_OFFSET + position);
+        return MEM.getDouble(data, MemoryAccessStrategy.ARRAY_BYTE_BASE_OFFSET + position);
     }
 
     @Override
@@ -81,13 +81,13 @@ class UnsafeObjectDataInput extends ByteArrayObjectDataInput {
     @Override
     public float readFloat(int position) throws IOException {
         checkAvailable(position, FLOAT_SIZE_IN_BYTES);
-        return MEM.getFloat(data, MemoryAccessor.ARRAY_BYTE_BASE_OFFSET + position);
+        return MEM.getFloat(data, MemoryAccessStrategy.ARRAY_BYTE_BASE_OFFSET + position);
     }
 
     @Override
     public int readInt(int position) throws IOException {
         checkAvailable(position, INT_SIZE_IN_BYTES);
-        return MEM.getInt(data, MemoryAccessor.ARRAY_BYTE_BASE_OFFSET + position);
+        return MEM.getInt(data, MemoryAccessStrategy.ARRAY_BYTE_BASE_OFFSET + position);
     }
 
     @Override
@@ -102,7 +102,7 @@ class UnsafeObjectDataInput extends ByteArrayObjectDataInput {
     @Override
     public long readLong(int position) throws IOException {
         checkAvailable(position, LONG_SIZE_IN_BYTES);
-        return MEM.getLong(data, MemoryAccessor.ARRAY_BYTE_BASE_OFFSET + position);
+        return MEM.getLong(data, MemoryAccessStrategy.ARRAY_BYTE_BASE_OFFSET + position);
     }
 
     @Override
@@ -117,7 +117,7 @@ class UnsafeObjectDataInput extends ByteArrayObjectDataInput {
     @Override
     public short readShort(int position) throws IOException {
         checkAvailable(position, SHORT_SIZE_IN_BYTES);
-        return MEM.getShort(data, MemoryAccessor.ARRAY_BYTE_BASE_OFFSET + position);
+        return MEM.getShort(data, MemoryAccessStrategy.ARRAY_BYTE_BASE_OFFSET + position);
     }
 
     @Override
@@ -137,7 +137,8 @@ class UnsafeObjectDataInput extends ByteArrayObjectDataInput {
         }
         if (len > 0) {
             char[] values = new char[len];
-            memCopy(values, MemoryAccessor.ARRAY_CHAR_BASE_OFFSET, len, MemoryAccessor.ARRAY_CHAR_INDEX_SCALE);
+            memCopy(values, MemoryAccessStrategy.ARRAY_CHAR_BASE_OFFSET,
+                    len, MemoryAccessStrategy.ARRAY_CHAR_INDEX_SCALE);
             return values;
         }
         return new char[0];
@@ -151,7 +152,8 @@ class UnsafeObjectDataInput extends ByteArrayObjectDataInput {
         }
         if (len > 0) {
             boolean[] values = new boolean[len];
-            memCopy(values, MemoryAccessor.ARRAY_BOOLEAN_BASE_OFFSET, len, MemoryAccessor.ARRAY_BOOLEAN_INDEX_SCALE);
+            memCopy(values, MemoryAccessStrategy.ARRAY_BOOLEAN_BASE_OFFSET,
+                    len, MemoryAccessStrategy.ARRAY_BOOLEAN_INDEX_SCALE);
             return values;
         }
         return new boolean[0];
@@ -165,7 +167,8 @@ class UnsafeObjectDataInput extends ByteArrayObjectDataInput {
         }
         if (len > 0) {
             byte[] values = new byte[len];
-            memCopy(values, MemoryAccessor.ARRAY_BYTE_BASE_OFFSET, len, MemoryAccessor.ARRAY_BYTE_INDEX_SCALE);
+            memCopy(values, MemoryAccessStrategy.ARRAY_BYTE_BASE_OFFSET,
+                    len, MemoryAccessStrategy.ARRAY_BYTE_INDEX_SCALE);
             return values;
         }
         return new byte[0];
@@ -179,7 +182,8 @@ class UnsafeObjectDataInput extends ByteArrayObjectDataInput {
         }
         if (len > 0) {
             int[] values = new int[len];
-            memCopy(values, MemoryAccessor.ARRAY_INT_BASE_OFFSET, len, MemoryAccessor.ARRAY_INT_INDEX_SCALE);
+            memCopy(values, MemoryAccessStrategy.ARRAY_INT_BASE_OFFSET,
+                    len, MemoryAccessStrategy.ARRAY_INT_INDEX_SCALE);
             return values;
         }
         return new int[0];
@@ -193,7 +197,8 @@ class UnsafeObjectDataInput extends ByteArrayObjectDataInput {
         }
         if (len > 0) {
             long[] values = new long[len];
-            memCopy(values, MemoryAccessor.ARRAY_LONG_BASE_OFFSET, len, MemoryAccessor.ARRAY_LONG_INDEX_SCALE);
+            memCopy(values, MemoryAccessStrategy.ARRAY_LONG_BASE_OFFSET,
+                    len, MemoryAccessStrategy.ARRAY_LONG_INDEX_SCALE);
             return values;
         }
         return new long[0];
@@ -207,7 +212,8 @@ class UnsafeObjectDataInput extends ByteArrayObjectDataInput {
         }
         if (len > 0) {
             double[] values = new double[len];
-            memCopy(values, MemoryAccessor.ARRAY_DOUBLE_BASE_OFFSET, len, MemoryAccessor.ARRAY_DOUBLE_INDEX_SCALE);
+            memCopy(values, MemoryAccessStrategy.ARRAY_DOUBLE_BASE_OFFSET,
+                    len, MemoryAccessStrategy.ARRAY_DOUBLE_INDEX_SCALE);
             return values;
         }
         return new double[0];
@@ -221,7 +227,8 @@ class UnsafeObjectDataInput extends ByteArrayObjectDataInput {
         }
         if (len > 0) {
             float[] values = new float[len];
-            memCopy(values, MemoryAccessor.ARRAY_FLOAT_BASE_OFFSET, len, MemoryAccessor.ARRAY_FLOAT_INDEX_SCALE);
+            memCopy(values, MemoryAccessStrategy.ARRAY_FLOAT_BASE_OFFSET,
+                    len, MemoryAccessStrategy.ARRAY_FLOAT_INDEX_SCALE);
             return values;
         }
         return new float[0];
@@ -235,13 +242,15 @@ class UnsafeObjectDataInput extends ByteArrayObjectDataInput {
         }
         if (len > 0) {
             short[] values = new short[len];
-            memCopy(values, MemoryAccessor.ARRAY_SHORT_BASE_OFFSET, len, MemoryAccessor.ARRAY_SHORT_INDEX_SCALE);
+            memCopy(values, MemoryAccessStrategy.ARRAY_SHORT_BASE_OFFSET,
+                    len, MemoryAccessStrategy.ARRAY_SHORT_INDEX_SCALE);
             return values;
         }
         return new short[0];
     }
 
-    private void memCopy(final Object dest, final long destOffset, final int length, final int indexScale) throws IOException {
+    private void memCopy(final Object dest, final long destOffset,
+                         final int length, final int indexScale) throws IOException {
         if (length < 0) {
             throw new NegativeArraySizeException("Destination length is negative: " + length);
         }
@@ -251,8 +260,9 @@ class UnsafeObjectDataInput extends ByteArrayObjectDataInput {
         long offset = destOffset;
 
         while (remaining > 0) {
-            int chunk = (remaining > MemoryAccessor.MEM_COPY_THRESHOLD) ? MemoryAccessor.MEM_COPY_THRESHOLD : remaining;
-            MEM.copyMemory(data, MemoryAccessor.ARRAY_BYTE_BASE_OFFSET + pos, dest, offset, chunk);
+            int chunk = (remaining > MemoryAccessStrategy.MEM_COPY_THRESHOLD)
+                    ? MemoryAccessStrategy.MEM_COPY_THRESHOLD : remaining;
+            MEM.copyMemory(data, MemoryAccessStrategy.ARRAY_BYTE_BASE_OFFSET + pos, dest, offset, chunk);
             remaining -= chunk;
             offset += chunk;
             pos += chunk;

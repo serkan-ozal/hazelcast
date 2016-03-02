@@ -89,9 +89,10 @@
 
     <!-- Memory -->
     <suppress checks="MagicNumber|IllegalImport" files="com.hazelcast.internal.memory.impl.UnsafeUtil"/>
-    <suppress checks="MethodCount|IllegalImport" files="com.hazelcast.internal.memory.*MemoryAccessor"/>
-    <suppress checks="MagicNumber" files="com.hazelcast.internal.memory.impl.AlignmentAwareMemoryAccessor"/>
-    <suppress checks="MethodCount|MagicNumber|IllegalImport" files="com.hazelcast.internal.memory.impl.DirectMemoryBits"/>
+    <suppress checks="MethodCount" files="com.hazelcast.internal.memory.strategy.MemoryAccessStrategy"/>
+    <suppress checks="MagicNumber|MethodCount|IllegalImport" files="com.hazelcast.internal.memory.impl.strategy.*MemoryAccessStrategy"/>
+    <suppress checks="MagicNumber|MethodCount|IllegalImport" files="com.hazelcast.internal.memory.impl.accessor.*MemoryAccessor"/>
+    <suppress checks="MethodCount|MagicNumber|IllegalImport" files="com.hazelcast.internal.memory.MemoryIO"/>
 
     <!-- OSGI -->
     <suppress checks="MethodCount" files="com/hazelcast/osgi/impl/HazelcastOSGiInstanceImpl"/>

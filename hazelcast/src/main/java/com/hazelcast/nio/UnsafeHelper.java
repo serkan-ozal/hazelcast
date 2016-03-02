@@ -36,9 +36,9 @@ import static com.hazelcast.util.QuickMath.normalize;
  * See Gil Tene's comment related to Unsafe usage;
  * https://groups.google.com/d/msg/mechanical-sympathy/X-GtLuG0ETo/LMV1d_2IybQJ
  * </p>
- * @deprecated Use {@link com.hazelcast.internal.memory.MemoryAccessor} instead due to following reasons:
+ * @deprecated Use {@link com.hazelcast.internal.memory.strategy.MemoryAccessStrategy} instead due to following reasons:
  * <p>
- * Deprecated to {@link com.hazelcast.internal.memory.MemoryAccessor} due to following reasons:
+ * Deprecated to {@link com.hazelcast.internal.memory.strategy.MemoryAccessStrategy} due to following reasons:
  * <ul>
  *     <li>
  *          Preventing hard-dependency to {@link sun.misc.Unsafe}/
@@ -54,13 +54,13 @@ import static com.hazelcast.util.QuickMath.normalize;
 public final class UnsafeHelper {
 
     /**
-     * @deprecated {@link com.hazelcast.internal.memory.MemoryAccessor#MEM} instead
+     * @deprecated {@link com.hazelcast.internal.memory.strategy.MemoryAccessStrategy#MEM} instead
      */
     @Deprecated
     public static final Unsafe UNSAFE;
 
     /**
-     * @deprecated {@link com.hazelcast.internal.memory.MemoryAccessor#MEM_AVAILABLE} instead
+     * @deprecated {@link com.hazelcast.internal.memory.strategy.MemoryAccessStrategy#MEM_AVAILABLE} instead
      */
     @Deprecated
     public static final boolean UNSAFE_AVAILABLE;

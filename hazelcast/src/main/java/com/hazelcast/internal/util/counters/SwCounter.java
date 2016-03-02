@@ -16,13 +16,13 @@
 
 package com.hazelcast.internal.util.counters;
 
-import com.hazelcast.internal.memory.MemoryAccessor;
+import com.hazelcast.internal.memory.strategy.MemoryAccessStrategy;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 
-import static com.hazelcast.internal.memory.MemoryAccessor.MEM;
+import static com.hazelcast.internal.memory.strategy.MemoryAccessStrategy.MEM;
 import static com.hazelcast.util.EmptyStatement.ignore;
 import static java.util.concurrent.atomic.AtomicLongFieldUpdater.newUpdater;
 
@@ -64,7 +64,7 @@ public abstract class SwCounter implements Counter {
      * @return the created SwCounter.
      */
     public static SwCounter newSwCounter(long initialValue) {
-        if (MemoryAccessor.MEM_AVAILABLE) {
+        if (MemoryAccessStrategy.MEM_AVAILABLE) {
             return new UnsafeSwCounter(initialValue);
         } else {
             return new SafeSwCounter(initialValue);

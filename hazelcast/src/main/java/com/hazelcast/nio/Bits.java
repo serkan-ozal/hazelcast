@@ -16,8 +16,7 @@
 
 package com.hazelcast.nio;
 
-import com.hazelcast.internal.memory.MemoryAccessor;
-import com.hazelcast.internal.memory.impl.DirectMemoryBits;
+import com.hazelcast.internal.memory.MemoryIO;
 
 import java.io.DataInput;
 import java.io.IOException;
@@ -82,113 +81,113 @@ public final class Bits {
     }
 
     public static char readChar(byte[] buffer, int pos, boolean bigEndian) {
-        return DirectMemoryBits.readChar(MemoryAccessor.HEAP_BYTE_ARRAY_MEM, buffer, pos, bigEndian);
+        return MemoryIO.readChar(buffer, pos, bigEndian);
     }
 
     public static char readCharB(byte[] buffer, int pos) {
-        return DirectMemoryBits.readCharB(MemoryAccessor.HEAP_BYTE_ARRAY_MEM, buffer, pos);
+        return MemoryIO.readCharB(buffer, pos);
     }
 
     public static char readCharL(byte[] buffer, int pos) {
-        return DirectMemoryBits.readCharL(MemoryAccessor.HEAP_BYTE_ARRAY_MEM, buffer, pos);
+        return MemoryIO.readCharL(buffer, pos);
     }
 
     public static void writeChar(byte[] buffer, int pos, char v, boolean bigEndian) {
-        DirectMemoryBits.writeChar(MemoryAccessor.HEAP_BYTE_ARRAY_MEM, buffer, pos, v, bigEndian);
+        MemoryIO.writeChar(buffer, pos, v, bigEndian);
     }
 
     public static void writeCharB(byte[] buffer, int pos, char v) {
-        DirectMemoryBits.writeCharB(MemoryAccessor.HEAP_BYTE_ARRAY_MEM, buffer, pos, v);
+        MemoryIO.writeCharB(buffer, pos, v);
     }
 
     public static void writeCharL(byte[] buffer, int pos, char v) {
-        DirectMemoryBits.writeCharL(MemoryAccessor.HEAP_BYTE_ARRAY_MEM, buffer, pos, v);
+        MemoryIO.writeCharL(buffer, pos, v);
     }
 
     public static short readShort(byte[] buffer, int pos, boolean bigEndian) {
-        return DirectMemoryBits.readShort(MemoryAccessor.HEAP_BYTE_ARRAY_MEM, buffer, pos, bigEndian);
+        return MemoryIO.readShort(buffer, pos, bigEndian);
     }
 
     public static short readShortB(byte[] buffer, int pos) {
-        return DirectMemoryBits.readShortB(MemoryAccessor.HEAP_BYTE_ARRAY_MEM, buffer, pos);
+        return MemoryIO.readShortB(buffer, pos);
     }
 
     public static short readShortL(byte[] buffer, int pos) {
-        return DirectMemoryBits.readShortL(MemoryAccessor.HEAP_BYTE_ARRAY_MEM, buffer, pos);
+        return MemoryIO.readShortL(buffer, pos);
     }
 
     public static void writeShort(byte[] buffer, int pos, short v, boolean bigEndian) {
-        DirectMemoryBits.writeShort(buffer, pos, v, bigEndian);
+        MemoryIO.writeShort(buffer, pos, v, bigEndian);
     }
 
     public static void writeShortB(byte[] buffer, int pos, short v) {
-        DirectMemoryBits.writeShortB(MemoryAccessor.HEAP_BYTE_ARRAY_MEM, buffer, pos, v);
+        MemoryIO.writeShortB(buffer, pos, v);
     }
 
     public static void writeShortL(byte[] buffer, int pos, short v) {
-        DirectMemoryBits.writeShortL(MemoryAccessor.HEAP_BYTE_ARRAY_MEM, buffer, pos, v);
+        MemoryIO.writeShortL(buffer, pos, v);
     }
 
     public static int readInt(byte[] buffer, int pos, boolean bigEndian) {
-        return DirectMemoryBits.readInt(MemoryAccessor.HEAP_BYTE_ARRAY_MEM, buffer, pos, bigEndian);
+        return MemoryIO.readInt(buffer, pos, bigEndian);
     }
 
     public static int readIntB(byte[] buffer, int pos) {
-        return DirectMemoryBits.readIntB(MemoryAccessor.HEAP_BYTE_ARRAY_MEM, buffer, pos);
+        return MemoryIO.readIntB(buffer, pos);
     }
 
     public static int readIntL(byte[] buffer, int pos) {
-        return DirectMemoryBits.readIntL(MemoryAccessor.HEAP_BYTE_ARRAY_MEM, buffer, pos);
+        return MemoryIO.readIntL(buffer, pos);
     }
 
     public static void writeInt(byte[] buffer, int pos, int v, boolean bigEndian) {
-        DirectMemoryBits.writeInt(MemoryAccessor.HEAP_BYTE_ARRAY_MEM, buffer, pos, v, bigEndian);
+        MemoryIO.writeInt(buffer, pos, v, bigEndian);
     }
 
     public static void writeIntB(byte[] buffer, int pos, int v) {
-        DirectMemoryBits.writeIntB(MemoryAccessor.HEAP_BYTE_ARRAY_MEM, buffer, pos, v);
+        MemoryIO.writeIntB(buffer, pos, v);
     }
 
     public static void writeIntL(byte[] buffer, int pos, int v) {
-        DirectMemoryBits.writeIntL(MemoryAccessor.HEAP_BYTE_ARRAY_MEM, buffer, pos, v);
+        MemoryIO.writeIntL(buffer, pos, v);
     }
 
     public static long readLong(byte[] buffer, int pos, boolean bigEndian) {
-        return DirectMemoryBits.readLong(MemoryAccessor.HEAP_BYTE_ARRAY_MEM, buffer, pos, bigEndian);
+        return MemoryIO.readLong(buffer, pos, bigEndian);
     }
 
     public static long readLongB(byte[] buffer, int pos) {
-        return DirectMemoryBits.readLongB(MemoryAccessor.HEAP_BYTE_ARRAY_MEM, buffer, pos);
+        return MemoryIO.readLongB(buffer, pos);
     }
 
     public static long readLongL(byte[] buffer, int pos) {
-        return DirectMemoryBits.readLongL(MemoryAccessor.HEAP_BYTE_ARRAY_MEM, buffer, pos);
+        return MemoryIO.readLongL(buffer, pos);
     }
 
     public static void writeLong(byte[] buffer, int pos, long v, boolean bigEndian) {
-        DirectMemoryBits.writeLong(MemoryAccessor.HEAP_BYTE_ARRAY_MEM, buffer, pos, v, bigEndian);
+        MemoryIO.writeLong(buffer, pos, v, bigEndian);
     }
 
     public static void writeLongB(byte[] buffer, int pos, long v) {
-        DirectMemoryBits.writeLongB(MemoryAccessor.HEAP_BYTE_ARRAY_MEM, buffer, pos, v);
+        MemoryIO.writeLongB(buffer, pos, v);
     }
 
     public static void writeLongL(byte[] buffer, int pos, long v) {
-        DirectMemoryBits.writeLongL(MemoryAccessor.HEAP_BYTE_ARRAY_MEM, buffer, pos, v);
+        MemoryIO.writeLongL(buffer, pos, v);
     }
 
     public static int writeUtf8Char(byte[] buffer, int pos, int c) {
-        return DirectMemoryBits.writeUtf8Char(MemoryAccessor.HEAP_BYTE_ARRAY_MEM, buffer, pos, c);
+        return MemoryIO.writeUtf8Char(buffer, pos, c);
     }
 
     public static int readUtf8Char(byte[] buffer, int pos, char[] dst, int dstPos)
             throws IOException {
-        return DirectMemoryBits.readUtf8Char(buffer, pos, dst, dstPos);
+        return MemoryIO.readUtf8Char(buffer, pos, dst, dstPos);
     }
 
     public static char readUtf8Char(DataInput in, byte firstByte)
             throws IOException {
-        return DirectMemoryBits.readUtf8Char(in, firstByte);
+        return MemoryIO.readUtf8Char(in, firstByte);
     }
 
     /**
