@@ -22,9 +22,9 @@ import java.nio.ByteOrder;
 
 /**
  * <p>
- * Aligned {@link com.hazelcast.internal.memory.MemoryAccessor} which checks for and handles unaligned memory access
- * by splitting a larger-size memory operation into several smaller-size ones
- * (which have finer-grained alignment requirements).
+ * Aligned {@link com.hazelcast.internal.memory2.strategy.MemoryAccessStrategy}
+ * which checks for and handles unaligned memory access by splitting a larger-size memory operation
+ * into several smaller-size ones (which have finer-grained alignment requirements).
  * </p><p>
  * A few notes on this implementation:
  * <ul>
@@ -93,7 +93,8 @@ public class AlignmentAwareMemoryAccessStrategy extends StandardMemoryAccessStra
         if (is2BytesAligned(address)) {
             return super.getCharVolatile(address);
         } else {
-            return MemoryIO.readCharVolatile(address, BIG_ENDIAN);
+            throw new IllegalArgumentException("Unaligned memory accesses are not supported for volatile reads/writes. "
+                    + "Address must be 2-bytes aligned for char typed volatile reads/writes, but it is " + address);
         }
     }
 
@@ -111,7 +112,8 @@ public class AlignmentAwareMemoryAccessStrategy extends StandardMemoryAccessStra
         if (is2BytesAligned(offset)) {
             return super.getCharVolatile(o, offset);
         } else {
-            return MemoryIO.readCharVolatile(o, offset, BIG_ENDIAN);
+            throw new IllegalArgumentException("Unaligned memory accesses are not supported for volatile reads/writes. "
+                    + "Offset must be 2-bytes aligned for char typed volatile reads/writes, but it is " + offset);
         }
     }
 
@@ -131,7 +133,8 @@ public class AlignmentAwareMemoryAccessStrategy extends StandardMemoryAccessStra
         if (is2BytesAligned(address)) {
             super.putCharVolatile(address, x);
         } else {
-            MemoryIO.writeCharVolatile(address, x, BIG_ENDIAN);
+            throw new IllegalArgumentException("Unaligned memory accesses are not supported for volatile reads/writes. "
+                    + "Address must be 2-bytes aligned for char typed volatile reads/writes, but it is " + address);
         }
     }
 
@@ -149,7 +152,8 @@ public class AlignmentAwareMemoryAccessStrategy extends StandardMemoryAccessStra
         if (is2BytesAligned(offset)) {
             super.putChar(o, offset, x);
         } else {
-            MemoryIO.writeCharVolatile(o, offset, x, BIG_ENDIAN);
+            throw new IllegalArgumentException("Unaligned memory accesses are not supported for volatile reads/writes. "
+                    + "Offset must be 2-bytes aligned for char typed volatile reads/writes, but it is " + offset);
         }
     }
 
@@ -169,7 +173,8 @@ public class AlignmentAwareMemoryAccessStrategy extends StandardMemoryAccessStra
         if (is2BytesAligned(address)) {
             return super.getShortVolatile(address);
         } else {
-            return MemoryIO.readShortVolatile(address, BIG_ENDIAN);
+            throw new IllegalArgumentException("Unaligned memory accesses are not supported for volatile reads/writes. "
+                    + "Address must be 2-bytes aligned for short typed volatile reads/writes, but it is " + address);
         }
     }
 
@@ -187,7 +192,8 @@ public class AlignmentAwareMemoryAccessStrategy extends StandardMemoryAccessStra
         if (is2BytesAligned(offset)) {
             return super.getShortVolatile(o, offset);
         } else {
-            return MemoryIO.readShortVolatile(o, offset, BIG_ENDIAN);
+            throw new IllegalArgumentException("Unaligned memory accesses are not supported for volatile reads/writes. "
+                    + "Offset must be 2-bytes aligned for short typed volatile reads/writes, but it is " + offset);
         }
     }
 
@@ -207,7 +213,8 @@ public class AlignmentAwareMemoryAccessStrategy extends StandardMemoryAccessStra
         if (is2BytesAligned(address)) {
             super.putShortVolatile(address, x);
         } else {
-            MemoryIO.writeShortVolatile(address, x, BIG_ENDIAN);
+            throw new IllegalArgumentException("Unaligned memory accesses are not supported for volatile reads/writes. "
+                    + "Address must be 2-bytes aligned for short typed volatile reads/writes, but it is " + address);
         }
     }
 
@@ -225,7 +232,8 @@ public class AlignmentAwareMemoryAccessStrategy extends StandardMemoryAccessStra
         if (is2BytesAligned(offset)) {
             super.putShortVolatile(o, offset, x);
         } else {
-            MemoryIO.writeShortVolatile(o, offset, x, BIG_ENDIAN);
+            throw new IllegalArgumentException("Unaligned memory accesses are not supported for volatile reads/writes. "
+                    + "Offset must be 2-bytes aligned for short typed volatile reads/writes, but it is " + offset);
         }
     }
 
@@ -245,7 +253,8 @@ public class AlignmentAwareMemoryAccessStrategy extends StandardMemoryAccessStra
         if (is4BytesAligned(address)) {
             return super.getIntVolatile(address);
         } else {
-            return MemoryIO.readIntVolatile(address, BIG_ENDIAN);
+            throw new IllegalArgumentException("Unaligned memory accesses are not supported for volatile reads/writes. "
+                    + "Address must be 4-bytes aligned for int typed volatile reads/writes, but it is " + address);
         }
     }
 
@@ -263,7 +272,8 @@ public class AlignmentAwareMemoryAccessStrategy extends StandardMemoryAccessStra
         if (is4BytesAligned(offset)) {
             return super.getIntVolatile(o, offset);
         } else {
-            return MemoryIO.readIntVolatile(o, offset, BIG_ENDIAN);
+            throw new IllegalArgumentException("Unaligned memory accesses are not supported for volatile reads/writes. "
+                    + "Offset must be 4-bytes aligned for int typed volatile reads/writes, but it is " + offset);
         }
     }
 
@@ -283,7 +293,8 @@ public class AlignmentAwareMemoryAccessStrategy extends StandardMemoryAccessStra
         if (is4BytesAligned(address)) {
             super.putIntVolatile(address, x);
         } else {
-            MemoryIO.writeIntVolatile(address, x, BIG_ENDIAN);
+            throw new IllegalArgumentException("Unaligned memory accesses are not supported for volatile reads/writes. "
+                    + "Address must be 4-bytes aligned for int typed volatile reads/writes, but it is " + address);
         }
     }
 
@@ -301,7 +312,8 @@ public class AlignmentAwareMemoryAccessStrategy extends StandardMemoryAccessStra
         if (is4BytesAligned(offset)) {
             super.putIntVolatile(o, offset, x);
         } else {
-            MemoryIO.writeIntVolatile(o, offset, x, BIG_ENDIAN);
+            throw new IllegalArgumentException("Unaligned memory accesses are not supported for volatile reads/writes. "
+                    + "Offset must be 4-bytes aligned for int typed volatile reads/writes, but it is " + offset);
         }
     }
 
@@ -321,7 +333,8 @@ public class AlignmentAwareMemoryAccessStrategy extends StandardMemoryAccessStra
         if (is4BytesAligned(address)) {
             return super.getFloatVolatile(address);
         } else {
-            return MemoryIO.readFloatVolatile(address, BIG_ENDIAN);
+            throw new IllegalArgumentException("Unaligned memory accesses are not supported for volatile reads/writes. "
+                    + "Address must be 4-bytes aligned for float typed volatile reads/writes, but it is " + address);
         }
     }
 
@@ -339,7 +352,8 @@ public class AlignmentAwareMemoryAccessStrategy extends StandardMemoryAccessStra
         if (is4BytesAligned(offset)) {
             return super.getFloatVolatile(o, offset);
         } else {
-            return MemoryIO.readFloatVolatile(o, offset, BIG_ENDIAN);
+            throw new IllegalArgumentException("Unaligned memory accesses are not supported for volatile reads/writes. "
+                    + "Offset must be 4-bytes aligned for float typed volatile reads/writes, but it is " + offset);
         }
     }
 
@@ -359,7 +373,8 @@ public class AlignmentAwareMemoryAccessStrategy extends StandardMemoryAccessStra
         if (is4BytesAligned(address)) {
             super.putFloatVolatile(address, x);
         } else {
-            MemoryIO.writeFloatVolatile(address, x, BIG_ENDIAN);
+            throw new IllegalArgumentException("Unaligned memory accesses are not supported for volatile reads/writes. "
+                    + "Address must be 4-bytes aligned for float typed volatile reads/writes, but it is " + address);
         }
     }
 
@@ -377,7 +392,8 @@ public class AlignmentAwareMemoryAccessStrategy extends StandardMemoryAccessStra
         if (is4BytesAligned(offset)) {
             super.putFloatVolatile(o, offset, x);
         } else {
-            MemoryIO.writeFloatVolatile(o, offset, x, BIG_ENDIAN);
+            throw new IllegalArgumentException("Unaligned memory accesses are not supported for volatile reads/writes. "
+                    + "Offset must be 4-bytes aligned for float typed volatile reads/writes, but it is " + offset);
         }
     }
 
@@ -397,7 +413,8 @@ public class AlignmentAwareMemoryAccessStrategy extends StandardMemoryAccessStra
         if (is8BytesAligned(address)) {
             return super.getLongVolatile(address);
         } else {
-            return MemoryIO.readLongVolatile(address, BIG_ENDIAN);
+            throw new IllegalArgumentException("Unaligned memory accesses are not supported for volatile reads/writes. "
+                    + "Address must be 8-bytes aligned for long typed volatile reads/writes, but it is " + address);
         }
     }
 
@@ -415,7 +432,8 @@ public class AlignmentAwareMemoryAccessStrategy extends StandardMemoryAccessStra
         if (is8BytesAligned(offset)) {
             return super.getLongVolatile(o, offset);
         } else {
-            return MemoryIO.readLongVolatile(o, offset, BIG_ENDIAN);
+            throw new IllegalArgumentException("Unaligned memory accesses are not supported for volatile reads/writes. "
+                    + "Offset must be 8-bytes aligned for long typed volatile reads/writes, but it is " + offset);
         }
     }
 
@@ -435,7 +453,8 @@ public class AlignmentAwareMemoryAccessStrategy extends StandardMemoryAccessStra
         if (is8BytesAligned(address)) {
             super.putLongVolatile(address, x);
         } else {
-            MemoryIO.writeLongVolatile(address, x, BIG_ENDIAN);
+            throw new IllegalArgumentException("Unaligned memory accesses are not supported for volatile reads/writes. "
+                    + "Address must be 8-bytes aligned for long typed volatile reads/writes, but it is " + address);
         }
     }
 
@@ -453,7 +472,8 @@ public class AlignmentAwareMemoryAccessStrategy extends StandardMemoryAccessStra
         if (is8BytesAligned(offset)) {
             super.putLongVolatile(o, offset, x);
         } else {
-            MemoryIO.writeLongVolatile(o, offset, x, BIG_ENDIAN);
+            throw new IllegalArgumentException("Unaligned memory accesses are not supported for volatile reads/writes. "
+                    + "Offset must be 8-bytes aligned for long typed volatile reads/writes, but it is " + offset);
         }
     }
 
@@ -473,7 +493,8 @@ public class AlignmentAwareMemoryAccessStrategy extends StandardMemoryAccessStra
         if (is8BytesAligned(address)) {
             return super.getDoubleVolatile(address);
         } else {
-            return MemoryIO.readDoubleVolatile(address, BIG_ENDIAN);
+            throw new IllegalArgumentException("Unaligned memory accesses are not supported for volatile reads/writes. "
+                    + "Address must be 8-bytes aligned for double typed volatile reads/writes, but it is " + address);
         }
     }
 
@@ -491,7 +512,8 @@ public class AlignmentAwareMemoryAccessStrategy extends StandardMemoryAccessStra
         if (is8BytesAligned(offset)) {
             return super.getDoubleVolatile(o, offset);
         } else {
-            return MemoryIO.readDoubleVolatile(o, offset, BIG_ENDIAN);
+            throw new IllegalArgumentException("Unaligned memory accesses are not supported for volatile reads/writes. "
+                    + "Offset must be 8-bytes aligned for double typed volatile reads/writes, but it is " + offset);
         }
     }
 
@@ -511,7 +533,8 @@ public class AlignmentAwareMemoryAccessStrategy extends StandardMemoryAccessStra
         if (is8BytesAligned(address)) {
             super.putDoubleVolatile(address, x);
         } else {
-            MemoryIO.writeDoubleVolatile(address, x, BIG_ENDIAN);
+            throw new IllegalArgumentException("Unaligned memory accesses are not supported for volatile reads/writes. "
+                    + "Address must be 8-bytes aligned for long typed volatile reads/writes, but it is " + address);
         }
     }
 
@@ -529,7 +552,8 @@ public class AlignmentAwareMemoryAccessStrategy extends StandardMemoryAccessStra
         if (is8BytesAligned(offset)) {
             super.putDoubleVolatile(o, offset, x);
         } else {
-            MemoryIO.writeDoubleVolatile(o, offset, x, BIG_ENDIAN);
+            throw new IllegalArgumentException("Unaligned memory accesses are not supported for volatile reads/writes. "
+                    + "Offset must be 8-bytes aligned for double typed volatile reads/writes, but it is " + offset);
         }
     }
 

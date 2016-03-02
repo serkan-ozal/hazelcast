@@ -26,7 +26,7 @@ public enum MemoryAccessStrategyType {
      * Requesting unaligned memory access from this instance will result in low-level JVM crash on
      * platforms which only support aligned access.
      *
-     * @see com.hazelcast.internal.memory.impl.StandardMemoryAccessor
+     * @see com.hazelcast.internal.memory2.impl.strategy.StandardMemoryAccessStrategy
      */
     STANDARD,
 
@@ -35,7 +35,7 @@ public enum MemoryAccessStrategyType {
      * by splitting a larger-size memory operation into several smaller-size ones
      * (which have finer-grained alignment requirements).
      *
-     * @see com.hazelcast.internal.memory.impl.AlignmentAwareMemoryAccessor
+     * @see com.hazelcast.internal.memory2.impl.strategy.AlignmentAwareMemoryAccessStrategy
      */
     ALIGNMENT_AWARE,
 

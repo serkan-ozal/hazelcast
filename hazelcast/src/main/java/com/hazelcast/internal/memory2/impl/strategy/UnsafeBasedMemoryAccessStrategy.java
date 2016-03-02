@@ -16,14 +16,13 @@
 
 package com.hazelcast.internal.memory2.impl.strategy;
 
-import com.hazelcast.internal.memory2.impl.UnsafeUtil;
 import com.hazelcast.internal.memory2.strategy.MemoryAccessStrategy;
 import sun.misc.Unsafe;
 
 import java.nio.ByteOrder;
 
 /**
- * Base class for {@link sun.misc.Unsafe} backed {@link com.hazelcast.internal.memory.MemoryAccessor} implementations.
+ * Base class for {@link sun.misc.Unsafe} backed {@link MemoryAccessStrategy} implementations.
  */
 abstract class UnsafeBasedMemoryAccessStrategy implements MemoryAccessStrategy {
 

@@ -21,7 +21,7 @@ import com.hazelcast.internal.memory2.MemoryIO;
 import java.lang.reflect.Field;
 
 /**
- * Standard {@link com.hazelcast.internal.memory.MemoryAccessor} implementations
+ * Standard {@link com.hazelcast.internal.memory2.strategy.MemoryAccessStrategy} implementations
  * that directly uses {@link sun.misc.Unsafe} for accessing to memory.
  */
 public class StandardMemoryAccessStrategy extends UnsafeBasedMemoryAccessStrategy {

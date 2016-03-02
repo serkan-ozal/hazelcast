@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hazelcast.internal.memory2.impl;
+package com.hazelcast.internal.memory2.impl.strategy;
 
 import com.hazelcast.logging.ILogger;
 import com.hazelcast.logging.Logger;
@@ -31,18 +31,18 @@ import static com.hazelcast.util.QuickMath.normalize;
 /**
  * Utility class for {@link sun.misc.Unsafe}.
  */
-public final class UnsafeUtil {
+final class UnsafeUtil {
 
     /**
      * The {@link sun.misc.Unsafe} instance which is available and ready to use.
      */
-    public static final Unsafe UNSAFE;
+    static final Unsafe UNSAFE;
 
     /**
      * If this constant is {@code true}, then {@link sun.misc.Unsafe} refers to a usable {@code Unsafe}
      * instance.
      */
-    public static final boolean UNSAFE_AVAILABLE;
+    static final boolean UNSAFE_AVAILABLE;
 
     private static final ILogger LOGGER = Logger.getLogger(UnsafeUtil.class);
 

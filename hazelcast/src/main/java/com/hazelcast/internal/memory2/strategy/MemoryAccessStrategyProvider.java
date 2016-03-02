@@ -54,8 +54,6 @@ public final class MemoryAccessStrategyProvider {
     }
 
     public static boolean isUnalignedAccessAllowed() {
-        // we can't use Unsafe to access memory on platforms where unaligned access is not allowed
-        // see https://github.com/hazelcast/hazelcast/issues/5518 for details.
         String arch = System.getProperty("os.arch");
         // list of architectures copied from OpenJDK - java.nio.Bits::unaligned
         return arch.equals("i386") || arch.equals("x86") || arch.equals("amd64") || arch.equals("x86_64");
@@ -63,13 +61,18 @@ public final class MemoryAccessStrategyProvider {
 
     /**
      * Returns the {@link MemoryAccessStrategy} instance appropriate to the given {@link MemoryAccessStrategyType}.
+     *
+     * @param memoryAccessStrategyType the type of the requested {@link MemoryAccessStrategy} implementation
+     * @return the {@link MemoryAccessStrategy} instance appropriate to the given {@link MemoryAccessStrategyType}
      */
-    public static MemoryAccessStrategy getMemoryAccessStrategy(MemoryAccessStrategyType memoryAccessorType) {
-        return MEMORY_ACCESS_STRATEGY_MAP.get(memoryAccessorType);
+    public static MemoryAccessStrategy getMemoryAccessStrategy(MemoryAccessStrategyType memoryAccessStrategyType) {
+        return MEMORY_ACCESS_STRATEGY_MAP.get(memoryAccessStrategyType);
     }
 
     /**
      * Returns the default {@link MemoryAccessStrategy} instance.
+     *
+     * @return the default {@link MemoryAccessStrategy} instance
      */
     public static MemoryAccessStrategy getDefaultMemoryAccessStrategy() {
         return MEMORY_ACCESS_STRATEGY_MAP.get(MemoryAccessStrategyType.PLATFORM_AWARE);
