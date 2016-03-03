@@ -24,13 +24,13 @@ public class ByteArrayMemoryAccessor extends AbstractConcurrentMemoryAccessor {
     private final byte[] baseArray;
     private final ByteArrayReaderWriter byteArrayReaderWriter;
 
-    public ByteArrayMemoryAccessor(byte[] baseArray) {
-        this(baseArray, false);
+    public ByteArrayMemoryAccessor(int size) {
+        this(size, false);
     }
 
-    public ByteArrayMemoryAccessor(byte[] baseArray, boolean aligned) {
+    public ByteArrayMemoryAccessor(int size, boolean aligned) {
         super(aligned);
-        this.baseArray = baseArray;
+        this.baseArray = new byte[size];
         if (memoryAccessStrategy != null) {
             byteArrayReaderWriter = new MemoryAccessStrategyBasedReaderWriter(baseArray, memoryAccessStrategy);
         } else {

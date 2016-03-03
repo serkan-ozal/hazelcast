@@ -109,12 +109,16 @@ public final class MemoryIO {
         return readChar(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos, bigEndian);
     }
 
+    public static char readCharB(byte[] buffer, int pos) {
+        return readCharB(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos);
+    }
+
+    public static char readCharL(byte[] buffer, int pos) {
+        return readCharL(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos);
+    }
+
     public static char readChar(Object base, long offset, boolean bigEndian) {
-        if (bigEndian) {
-            return readCharB(base, offset);
-        } else {
-            return readCharL(base, offset);
-        }
+        return readChar(DIRECT_MEM_BYTE_MEM_ACCESSOR, base, offset, bigEndian);
     }
 
     public static char readCharB(Object base, long offset) {
@@ -151,6 +155,14 @@ public final class MemoryIO {
 
     public static void writeChar(byte[] buffer, int pos, char v, boolean bigEndian) {
         writeChar(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos, v, bigEndian);
+    }
+
+    public static void writeCharB(byte[] buffer, int pos, char v) {
+        writeCharB(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos, v);
+    }
+
+    public static void writeCharL(byte[] buffer, int pos, char v) {
+        writeCharL(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos, v);
     }
 
     public static void writeChar(Object base, long offset, char v, boolean bigEndian) {
@@ -194,6 +206,14 @@ public final class MemoryIO {
         return readShort(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos, bigEndian);
     }
 
+    public static short readShortB(byte[] buffer, int pos) {
+        return readShortB(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos);
+    }
+
+    public static short readShortL(byte[] buffer, int pos) {
+        return readShortL(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos);
+    }
+
     public static short readShort(Object base, long offset, boolean bigEndian) {
         return readShort(DIRECT_MEM_BYTE_MEM_ACCESSOR, base, offset, bigEndian);
     }
@@ -235,12 +255,16 @@ public final class MemoryIO {
         writeShort(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos, v, bigEndian);
     }
 
+    public static void writeShortB(byte[] buffer, int pos, short v) {
+        writeShortB(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos, v);
+    }
+
+    public static void writeShortL(byte[] buffer, int pos, short v) {
+        writeShortL(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos, v);
+    }
+
     public static void writeShort(Object base, long offset, short v, boolean bigEndian) {
-        if (bigEndian) {
-            writeShortB(base, offset, v);
-        } else {
-            writeShortL(base, offset, v);
-        }
+        writeShort(DIRECT_MEM_BYTE_MEM_ACCESSOR, base, offset, v, bigEndian);
     }
 
     public static void writeShortB(Object base, long offset, short v) {
@@ -278,6 +302,14 @@ public final class MemoryIO {
 
     public static int readInt(byte[] buffer, int pos, boolean bigEndian) {
         return readInt(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos, bigEndian);
+    }
+
+    public static int readIntB(byte[] buffer, int pos) {
+        return readIntB(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos);
+    }
+
+    public static int readIntL(byte[] buffer, int pos) {
+        return readIntL(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos);
     }
 
     public static int readInt(Object base, long offset, boolean bigEndian) {
@@ -324,8 +356,24 @@ public final class MemoryIO {
         writeInt(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos, v, bigEndian);
     }
 
+    public static void writeIntB(byte[] buffer, int pos, int v) {
+        writeIntB(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos, v);
+    }
+
+    public static void writeIntL(byte[] buffer, int pos, int v) {
+        writeIntL(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos, v);
+    }
+
     public static void writeInt(Object base, long offset, int v, boolean bigEndian) {
         writeInt(DIRECT_MEM_BYTE_MEM_ACCESSOR, base, offset, v, bigEndian);
+    }
+
+    public static void writeIntB(Object base, long offset, int v) {
+        writeIntB(DIRECT_MEM_BYTE_MEM_ACCESSOR, base, offset, v);
+    }
+
+    public static void writeIntL(Object base, long offset, int v) {
+        writeIntL(DIRECT_MEM_BYTE_MEM_ACCESSOR, base, offset, v);
     }
 
     public static <R> void writeInt(ByteMemoryAccessor<R> memoryAccessor, R resource,
@@ -335,14 +383,6 @@ public final class MemoryIO {
         } else {
             writeIntL(memoryAccessor, resource, offset, v);
         }
-    }
-
-    public static void writeIntB(Object base, long offset, int v) {
-        writeIntB(DIRECT_MEM_BYTE_MEM_ACCESSOR, base, offset, v);
-    }
-
-    public static void writeIntL(Object base, long offset, int v) {
-        writeIntL(DIRECT_MEM_BYTE_MEM_ACCESSOR, base, offset, v);
     }
 
     public static <R> void writeIntB(ByteMemoryAccessor<R> memoryAccessor, R resource, long offset, int v) {
@@ -367,6 +407,14 @@ public final class MemoryIO {
 
     public static float readFloat(byte[] buffer, int pos, boolean bigEndian) {
         return readFloat(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos, bigEndian);
+    }
+
+    public static float readFloatB(byte[] buffer, int pos) {
+        return readFloatB(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos);
+    }
+
+    public static float readFloatL(byte[] buffer, int pos) {
+        return readFloatL(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos);
     }
 
     public static float readFloat(Object base, long offset, boolean bigEndian) {
@@ -406,8 +454,24 @@ public final class MemoryIO {
         writeFloat(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos, v, bigEndian);
     }
 
+    public static void writeFloatB(byte[] buffer, int pos, float v) {
+        writeFloatB(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos, v);
+    }
+
+    public static void writeFloatL(byte[] buffer, int pos, float v) {
+        writeFloatL(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos, v);
+    }
+
     public static void writeFloat(Object base, long offset, float v, boolean bigEndian) {
         writeFloat(DIRECT_MEM_BYTE_MEM_ACCESSOR, base, offset, v, bigEndian);
+    }
+
+    public static void writeFloatB(Object base, long offset, float v) {
+        writeFloatB(DIRECT_MEM_BYTE_MEM_ACCESSOR, base, offset, v);
+    }
+
+    public static void writeFloatL(Object base, long offset, float v) {
+        writeFloatL(DIRECT_MEM_BYTE_MEM_ACCESSOR, base, offset, v);
     }
 
     public static <R> void writeFloat(ByteMemoryAccessor<R> memoryAccessor, R resource, long offset,
@@ -417,14 +481,6 @@ public final class MemoryIO {
         } else {
             writeFloatL(memoryAccessor, resource, offset, v);
         }
-    }
-
-    public static void writeFloatB(Object base, long offset, float v) {
-        writeFloatB(DIRECT_MEM_BYTE_MEM_ACCESSOR, base, offset, v);
-    }
-
-    public static void writeFloatL(Object base, long offset, float v) {
-        writeFloatL(DIRECT_MEM_BYTE_MEM_ACCESSOR, base, offset, v);
     }
 
     public static <R> void writeFloatB(ByteMemoryAccessor<R> memoryAccessor, R resource, long offset, float v) {
@@ -443,6 +499,14 @@ public final class MemoryIO {
 
     public static long readLong(byte[] buffer, int pos, boolean bigEndian) {
         return readLong(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos, bigEndian);
+    }
+
+    public static long readLongB(byte[] buffer, int pos) {
+        return readLongB(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos);
+    }
+
+    public static long readLongL(byte[] buffer, int pos) {
+        return readLongL(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos);
     }
 
     public static long readLong(Object base, long offset, boolean bigEndian) {
@@ -498,8 +562,24 @@ public final class MemoryIO {
         writeLong(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos, v, bigEndian);
     }
 
+    public static void writeLongB(byte[] buffer, int pos, long v) {
+        writeLongB(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos, v);
+    }
+
+    public static void writeLongL(byte[] buffer, int pos, long v) {
+        writeLongL(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos, v);
+    }
+
     public static void writeLong(Object base, long offset, long v, boolean bigEndian) {
         writeLong(DIRECT_MEM_BYTE_MEM_ACCESSOR, base, offset, v, bigEndian);
+    }
+
+    public static void writeLongB(Object base, long offset, long v) {
+        writeLongB(DIRECT_MEM_BYTE_MEM_ACCESSOR, base, offset, v);
+    }
+
+    public static void writeLongL(Object base, long offset, long v) {
+        writeLongL(DIRECT_MEM_BYTE_MEM_ACCESSOR, base, offset, v);
     }
 
     public static <R> void writeLong(ByteMemoryAccessor<R> memoryAccessor, R resource, long offset,
@@ -509,14 +589,6 @@ public final class MemoryIO {
         } else {
             writeLongL(memoryAccessor, resource, offset, v);
         }
-    }
-
-    public static void writeLongB(Object base, long offset, long v) {
-        writeLongB(DIRECT_MEM_BYTE_MEM_ACCESSOR, base, offset, v);
-    }
-
-    public static void writeLongL(Object base, long offset, long v) {
-        writeLongL(DIRECT_MEM_BYTE_MEM_ACCESSOR, base, offset, v);
     }
 
     public static <R> void writeLongB(ByteMemoryAccessor<R> memoryAccessor, R resource, long offset, long v) {
@@ -549,6 +621,14 @@ public final class MemoryIO {
 
     public static double readDouble(byte[] buffer, int pos, boolean bigEndian) {
         return readDouble(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos, bigEndian);
+    }
+
+    public static double readDoubleB(byte[] buffer, int pos) {
+        return readDoubleB(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos);
+    }
+
+    public static double readDoubleL(byte[] buffer, int pos) {
+        return readDoubleL(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos);
     }
 
     public static double readDouble(Object base, long offset, boolean bigEndian) {
@@ -586,6 +666,14 @@ public final class MemoryIO {
 
     public static void writeDouble(byte[] buffer, int pos, double v, boolean bigEndian) {
         writeDouble(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos, v, bigEndian);
+    }
+
+    public static void writeDoubleB(byte[] buffer, int pos, double v) {
+        writeLongB(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos, Double.doubleToRawLongBits(v));
+    }
+
+    public static void writeDoubleL(byte[] buffer, int pos, double v) {
+        writeLongL(BYTE_ARRAY_BYTE_MEM_ACCESSOR, buffer, pos, Double.doubleToRawLongBits(v));
     }
 
     public static void writeDouble(Object base, long offset, double v, boolean bigEndian) {
