@@ -24,7 +24,9 @@ import com.hazelcast.core.Member;
 import com.hazelcast.nio.ObjectDataInput;
 import com.hazelcast.nio.ObjectDataOutput;
 import com.hazelcast.nio.serialization.IdentifiedDataSerializable;
+import com.hazelcast.spi.BackupAwareOperation;
 import com.hazelcast.spi.NodeEngine;
+import com.hazelcast.spi.Operation;
 import com.hazelcast.spi.OperationService;
 import com.hazelcast.spi.impl.AbstractNamedOperation;
 import com.hazelcast.spi.impl.SimpleExecutionCallback;
@@ -47,7 +49,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class CacheCreateConfigOperation
         extends AbstractNamedOperation
-        implements IdentifiedDataSerializable {
+        implements BackupAwareOperation, IdentifiedDataSerializable {
 
     private CacheConfig config;
     private boolean createAlsoOnOthers = true;
@@ -121,6 +123,26 @@ public class CacheCreateConfigOperation
         super.onExecutionFailure(e);
     }
 
+    @Override
+    public boolean shouldBackup() {
+        return false;
+    }
+
+    @Override
+    public int getSyncBackupCount() {
+        return 0;
+    }
+
+    @Override
+    public int getAsyncBackupCount() {
+        return 0;
+    }
+
+    @Override
+    public Operation getBackupOperation() {
+        return null;
+    }
+
     private static class CacheConfigCreateCallback extends SimpleExecutionCallback<Object> {
 
         final AtomicInteger counter;
@@ -139,6 +161,8 @@ public class CacheCreateConfigOperation
         }
     }
 
+
+
     @Override
     public Object getResponse() {
         return response;
@@ -148,7 +172,6 @@ public class CacheCreateConfigOperation
     public boolean returnsResponse() {
         return returnsResponse;
     }
-
 
     @Override
     protected void writeInternal(ObjectDataOutput out)
